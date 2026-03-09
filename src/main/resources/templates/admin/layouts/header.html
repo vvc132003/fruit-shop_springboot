@@ -1,0 +1,235 @@
+
+<header th:fragment="header" class="app-header fixed-top">
+	<div class="app-header-inner">
+		<div class="container-fluid py-2">
+			<div class="app-header-content">
+				<div class="row justify-content-between align-items-center">
+
+					<div class="col-auto">
+						<a id="sidepanel-toggler"
+							class="sidepanel-toggler d-inline-block d-xl-none" href="#">
+							<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+								viewBox="0 0 30 30" role="img">
+                                    <title>Menu</title>
+                                    <path stroke="currentColor"
+									stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"
+									d="M4 7h22M4 15h22M4 23h22"></path>
+                                </svg>
+						</a>
+					</div>
+					<!--//col-->
+					<div class="search-mobile-trigger d-sm-none col">
+						<i class="search-mobile-trigger-icon fa-solid fa-magnifying-glass"></i>
+					</div>
+					<!--//col-->
+					<div class="app-search-box col">
+						<form class="app-search-form">
+							<input type="text" placeholder="Search..." name="search"
+								class="form-control search-input">
+							<button type="submit" class="btn search-btn btn-primary"
+								value="Search">
+								<i class="fa-solid fa-magnifying-glass"></i>
+							</button>
+						</form>
+					</div>
+					<!--//app-search-box-->
+
+					<div class="app-utilities col-auto">
+						<div class="app-utility-item">
+							<a title="Settings"> <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
+								<svg width="1em" height="1em" viewBox="0 0 16 16"
+									class="bi bi-gear icon" fill="currentColor"
+									xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+										d="M8.837 1.626c-.246-.835-1.428-.835-1.674 0l-.094.319A1.873 1.873 0 0 1 4.377 3.06l-.292-.16c-.764-.415-1.6.42-1.184 1.185l.159.292a1.873 1.873 0 0 1-1.115 2.692l-.319.094c-.835.246-.835 1.428 0 1.674l.319.094a1.873 1.873 0 0 1 1.115 2.693l-.16.291c-.415.764.42 1.6 1.185 1.184l.292-.159a1.873 1.873 0 0 1 2.692 1.116l.094.318c.246.835 1.428.835 1.674 0l.094-.319a1.873 1.873 0 0 1 2.693-1.115l.291.16c.764.415 1.6-.42 1.184-1.185l-.159-.291a1.873 1.873 0 0 1 1.116-2.693l.318-.094c.835-.246.835-1.428 0-1.674l-.319-.094a1.873 1.873 0 0 1-1.115-2.692l.16-.292c.415-.764-.42-1.6-1.185-1.184l-.291.159A1.873 1.873 0 0 1 8.93 1.945l-.094-.319zm-2.633-.283c.527-1.79 3.065-1.79 3.592 0l.094.319a.873.873 0 0 0 1.255.52l.292-.16c1.64-.892 3.434.901 2.54 2.541l-.159.292a.873.873 0 0 0 .52 1.255l.319.094c1.79.527 1.79 3.065 0 3.592l-.319.094a.873.873 0 0 0-.52 1.255l.16.292c.893 1.64-.902 3.434-2.541 2.54l-.292-.159a.873.873 0 0 0-1.255.52l-.094.319c-.527 1.79-3.065 1.79-3.592 0l-.094-.319a.873.873 0 0 0-1.255-.52l-.292.16c-1.64.893-3.433-.902-2.54-2.541l.159-.292a.873.873 0 0 0-.52-1.255l-.319-.094c-1.79-.527-1.79-3.065 0-3.592l.319-.094a.873.873 0 0 0 .52-1.255l-.16-.292c-.892-1.64.902-3.433 2.541-2.54l.292.159a.873.873 0 0 0 1.255-.52l.094-.319z" />
+                                        <path fill-rule="evenodd"
+										d="M8 5.754a2.246 2.246 0 1 0 0 4.492 2.246 2.246 0 0 0 0-4.492zM4.754 8a3.246 3.246 0 1 1 6.492 0 3.246 3.246 0 0 1-6.492 0z" />
+                                    </svg>
+							</a>
+						</div>
+						<!--//app-utility-item-->
+
+						<div class="app-utility-item app-user-dropdown dropdown">
+							<a class="dropdown-toggle" id="user-dropdown-toggle"
+								data-bs-toggle="dropdown" href="#" role="button"> <img
+								th:src="${session.user != null && session.user.avatar != null} 
+? @{${session.user.avatar}} 
+: @{/assets/images/user.png}"
+								alt="user profile" class="rounded-circle">
+
+							</a>
+							<ul class="dropdown-menu">
+
+								<li><a class="dropdown-item" th:href="@{/admin/account}">
+										Tài khoản </a></li>
+
+								<li><a class="dropdown-item" th:href="@{/admin/password}">
+										Đổi mật khẩu </a></li>
+
+								<li>
+									<hr class="dropdown-divider">
+								</li>
+
+								<li><a class="dropdown-item" th:href="@{/logout}"> Đăng
+										xuất </a></li>
+
+							</ul>
+						</div>
+						<!--//app-user-dropdown-->
+					</div>
+					<!--//app-utilities-->
+				</div>
+				<!--//row-->
+			</div>
+			<!--//app-header-content-->
+		</div>
+		<!--//container-fluid-->
+	</div>
+	<!--//app-header-inner-->
+	<div id="app-sidepanel" class="app-sidepanel">
+		<div id="sidepanel-drop" class="sidepanel-drop"></div>
+		<div class="sidepanel-inner d-flex flex-column">
+			<a href="#" id="sidepanel-close" class="sidepanel-close d-xl-none">&times;</a>
+			<div class="app-branding">
+				<a class="app-logo" th:href="@{/dashboard}"><img
+					class="logo-icon me-2" th:src="@{/assets/images/app-logo.svg}"
+					alt="logo"><span class="logo-text">SMARTSHOP</span></a>
+
+			</div>
+			<!--//app-branding-->
+
+			<nav id="app-nav-main" class="app-nav app-nav-main flex-grow-1">
+				<ul class="app-menu list-unstyled accordion" id="menu-accordion">
+					<li class="nav-item">
+						<!--//Bootstrap Icons: https://icons.getbootstrap.com/ --> <a
+						class="nav-link"
+						th:classappend="${currentUri.startsWith('/dashboard')} ? 'active'"
+						th:href="@{/dashboard}"> <span class="nav-icon"> <svg
+									width="1em" height="1em" viewBox="0 0 16 16"
+									class="bi bi-house-door" fill="currentColor"
+									xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+										d="M7.646 1.146a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 .146.354v7a.5.5 0 0 1-.5.5H9.5a.5.5 0 0 1-.5-.5v-4H7v4a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .146-.354l6-6zM2.5 7.707V14H6v-4a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v4h3.5V7.707L8 2.207l-5.5 5.5z" />
+                                        <path fill-rule="evenodd"
+										d="M13 2.5V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z" />
+                                    </svg>
+						</span> <span class="nav-link-text">Doanh thu</span>
+					</a> <!--//nav-link-->
+					</li>
+					<!--//nav-item-->
+					<li class="nav-item">
+						<!--//Bootstrap Icons: https://icons.getbootstrap.com/ --> <a
+						class="nav-link"
+						th:classappend="${currentUri.startsWith('/categories')} ? 'active'"
+						th:href="@{/categories}"> <span class="nav-icon"> <i
+								class="fas fa-list"></i>
+						</span> <span class="nav-link-text">Loại sản phẩm</span>
+					</a> <!--//nav-link-->
+					</li>
+					<!--//nav-item-->
+					<li class="nav-item">
+						<!--//Bootstrap Icons: https://icons.getbootstrap.com/ --> <a
+						class="nav-link"
+						th:classappend="${currentUri.startsWith('/products')} ? 'active'"
+						th:href="@{/products}"> <span class="nav-icon"> <i
+								class="fas fa-box-open"></i>
+						</span> <span class="nav-link-text">Sản phẩm</span>
+					</a> <!--//nav-link-->
+					</li>
+					<!--//nav-item-->
+					<li class="nav-item">
+						<!--//Bootstrap Icons: https://icons.getbootstrap.com/ --> <a
+						class="nav-link "
+						th:classappend="${currentUri.startsWith('/orders')} ? 'active'"
+						th:href="@{/orders}"> <span class="nav-icon"> <svg
+									width="1em" height="1em" viewBox="0 0 16 16"
+									class="bi bi-card-list" fill="currentColor"
+									xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+										d="M14.5 3h-13a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
+                                        <path fill-rule="evenodd"
+										d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5z" />
+                                        <circle cx="3.5" cy="5.5" r=".5" />
+                                        <circle cx="3.5" cy="8" r=".5" />
+                                        <circle cx="3.5" cy="10.5"
+										r=".5" />
+                                    </svg>
+						</span> <span class="nav-link-text">Đơn hàng</span>
+					</a> <!--//nav-link-->
+					</li>
+					<!--//nav-item-->
+					<li class="nav-item"><a class="nav-link "
+						th:classappend="${currentUri.startsWith('/customers')} ? 'active'"
+						th:href="@{/customers}"> <span class="nav-icon"> <svg
+									width="1em" height="1em" viewBox="0 0 16 16"
+									class="bi bi-file-person" fill="currentColor"
+									xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+										d="M12 1H4a1 1 0 0 0-1 1v10.755S4 11 8 11s5 1.755 5 1.755V2a1 1 0 0 0-1-1zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z" />
+                                        <path fill-rule="evenodd"
+										d="M8 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                                    </svg>
+						</span> <span class="nav-link-text">Khách hàng</span>
+					</a> <!--//nav-link--></li>
+					<!--//nav-item-->
+					<li class="nav-item"><a class="nav-link "
+						th:classappend="${currentUri.startsWith('/customers')} ? 'active'"
+						th:href="@{/customers}"> <span class="nav-icon"> <svg
+									width="1em" height="1em" viewBox="0 0 16 16"
+									class="bi bi-chat-dots" fill="currentColor"
+									xmlns="http://www.w3.org/2000/svg">
+                                        <path
+										d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6l-4 4V2z" />
+                                        <path
+										d="M5 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm3 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm3 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+                                    </svg>
+						</span> <span class="nav-link-text">Bình luận</span>
+					</a></li>
+					<li class="nav-item"><a class="nav-link"
+						th:classappend="${currentUri.startsWith('/customers')} ? 'active'"
+						th:href="@{/customers}"> <span class="nav-icon"> <svg
+									width="1em" height="1em" viewBox="0 0 16 16"
+									class="bi bi-heart" fill="currentColor"
+									xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+										d="M8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 3.905C3.4 9.58 8 13.5 8 13.5s4.6-3.92 6.286-6.542c.955-1.405.838-2.882.314-3.905C13.486.878 10.4.28 8.717 2.01L8 2.748z" />
+                                    </svg>
+						</span> <span class="nav-link-text">Yêu thích</span>
+					</a></li>
+
+
+
+				</ul>
+				<!--//app-menu-->
+			</nav>
+			<!--//app-nav-->
+			<div class="app-sidepanel-footer">
+				<nav class="app-nav app-nav-footer">
+					<ul class="app-menu footer-menu list-unstyled">
+						<li class="nav-item">
+							<!--//Bootstrap Icons: https://icons.getbootstrap.com/ --> <a
+							class="nav-link"> <span class="nav-icon"> <svg
+										width="1em" height="1em" viewBox="0 0 16 16"
+										class="bi bi-gear" fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+											d="M8.837 1.626c-.246-.835-1.428-.835-1.674 0l-.094.319A1.873 1.873 0 0 1 4.377 3.06l-.292-.16c-.764-.415-1.6.42-1.184 1.185l.159.292a1.873 1.873 0 0 1-1.115 2.692l-.319.094c-.835.246-.835 1.428 0 1.674l.319.094a1.873 1.873 0 0 1 1.115 2.693l-.16.291c-.415.764.42 1.6 1.185 1.184l.292-.159a1.873 1.873 0 0 1 2.692 1.116l.094.318c.246.835 1.428.835 1.674 0l.094-.319a1.873 1.873 0 0 1 2.693-1.115l.291.16c.764.415 1.6-.42 1.184-1.185l-.159-.291a1.873 1.873 0 0 1 1.116-2.693l.318-.094c.835-.246.835-1.428 0-1.674l-.319-.094a1.873 1.873 0 0 1-1.115-2.692l.16-.292c.415-.764-.42-1.6-1.185-1.184l-.291.159A1.873 1.873 0 0 1 8.93 1.945l-.094-.319zm-2.633-.283c.527-1.79 3.065-1.79 3.592 0l.094.319a.873.873 0 0 0 1.255.52l.292-.16c1.64-.892 3.434.901 2.54 2.541l-.159.292a.873.873 0 0 0 .52 1.255l.319.094c1.79.527 1.79 3.065 0 3.592l-.319.094a.873.873 0 0 0-.52 1.255l.16.292c.893 1.64-.902 3.434-2.541 2.54l-.292-.159a.873.873 0 0 0-1.255.52l-.094.319c-.527 1.79-3.065 1.79-3.592 0l-.094-.319a.873.873 0 0 0-1.255-.52l-.292.16c-1.64.893-3.433-.902-2.54-2.541l.159-.292a.873.873 0 0 0-.52-1.255l-.319-.094c-1.79-.527-1.79-3.065 0-3.592l.319-.094a.873.873 0 0 0 .52-1.255l-.16-.292c-.892-1.64.902-3.433 2.541-2.54l.292.159a.873.873 0 0 0 1.255-.52l.094-.319z" />
+                                            <path fill-rule="evenodd"
+											d="M8 5.754a2.246 2.246 0 1 0 0 4.492 2.246 2.246 0 0 0 0-4.492zM4.754 8a3.246 3.246 0 1 1 6.492 0 3.246 3.246 0 0 1-6.492 0z" />
+                                        </svg>
+							</span> <span class="nav-link-text">Cài đặt</span>
+						</a> <!--//nav-link-->
+						</li>
+						<!--//nav-item-->
+					</ul>
+					<!--//footer-menu-->
+				</nav>
+			</div>
+			<!--//app-sidepanel-footer-->
+
+		</div>
+		<!--//sidepanel-inner-->
+	</div>
+	<!--//app-sidepanel-->
+</header>
+<!--//app-header-->

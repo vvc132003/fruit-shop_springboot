@@ -1,0 +1,179 @@
+<script src="<?= BASE_URL ?>/assets/js/all.min.js"></script>
+<script src="<?= BASE_URL ?>/assets/plugins/popper.min.js"></script>
+<script src="<?= BASE_URL ?>/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="<?= BASE_URL ?>/assets/plugins/chart.js/chart.min.js"></script>
+<script src="<?= BASE_URL ?>/assets/js/index-charts.js"></script>
+<script src="<?= BASE_URL ?>/assets/js/app.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    window.chartColors = {
+        green: '#75c181',
+        gray: '#a9b5c9',
+        text: '#252930',
+        border: '#e7e9ed'
+    };
+
+    var randomDataPoint = function() {
+        return Math.round(Math.random() * 10000)
+    };
+
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('<?= BASE_URL ?>/admin/dashboard/chartData')
+            .then(res => res.json())
+            .then(data => renderLineChart(data))
+            .catch(err => console.error(err));
+
+
+        function renderLineChart(data) {
+
+            const ctx = document.getElementById('canvas-linechart').getContext('2d');
+
+
+            // const ctx = canvas.getContext('2d');
+
+            const datasets = [{
+                label: 'Tuần này',
+                data: data.current,
+                borderColor: window.chartColors.green,
+                backgroundColor: 'transparent',
+                tension: 0.3,
+                pointRadius: 5,
+                pointHoverRadius: 7
+            }];
+
+            // Chỉ hiển thị tuần trước nếu có dữ liệu
+            if (!data.previous.every(v => v === 0)) {
+                datasets.push({
+                    label: 'Tuần trước',
+                    data: data.previous,
+                    borderColor: window.chartColors.gray,
+                    borderDash: [5, 5],
+                    backgroundColor: 'transparent',
+                    tension: 0.3,
+                    pointRadius: 4
+                });
+            }
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.labels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' +
+                                        context.parsed.y.toLocaleString('vi-VN') + ' đ';
+                                }
+                            }
+                        },
+                        // title: {
+                        //     display: true,
+                        //     text: 'Doanh thu 7 ngày gần nhất'
+                        // }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: value =>
+                                    value.toLocaleString('vi-VN') + ' đ'
+                            },
+                            grid: {
+                                color: window.chartColors.border
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+
+        fetch('<?= BASE_URL ?>/admin/dashboard/orderChartData')
+            .then(res => res.json())
+            .then(res => {
+
+                var ctx = document.getElementById('canvas-barchart').getContext('2d');
+
+                var barChartConfig = {
+                    type: 'bar',
+                    data: {
+                        labels: res.labels,
+                        datasets: [{
+                            label: 'Đơn hàng',
+                            backgroundColor: window.chartColors.green,
+                            borderColor: window.chartColors.green,
+                            borderWidth: 1,
+                            maxBarThickness: 16,
+                            data: res.data
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        aspectRatio: 1.5,
+                        legend: {
+                            position: 'bottom',
+                            align: 'end'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Orders in last 7 days'
+                        },
+                        tooltips: {
+                            mode: 'index',
+                            intersect: false,
+                            titleMarginBottom: 10,
+                            bodySpacing: 10,
+                            xPadding: 16,
+                            yPadding: 16,
+                            borderColor: window.chartColors.border,
+                            borderWidth: 1,
+                            backgroundColor: '#fff',
+                            bodyFontColor: window.chartColors.text,
+                            titleFontColor: window.chartColors.text
+                        },
+                        scales: {
+                            xAxes: [{
+                                gridLines: {
+                                    drawBorder: false,
+                                    color: window.chartColors.border
+                                }
+                            }],
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                },
+                                gridLines: {
+                                    drawBorder: false,
+                                    color: window.chartColors.border
+                                }
+                            }]
+                        }
+                    }
+                };
+
+                new Chart(ctx, barChartConfig);
+            });
+    });
+</script>
+
+
+</body>
+
+</html>
