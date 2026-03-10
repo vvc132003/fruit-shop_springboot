@@ -16,7 +16,8 @@ public class Comment {
 
     @Enumerated(EnumType.STRING)
     private CommentStatus status;
-
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Khách hàng</title>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="description"
+	content="Portal - Bootstrap 5 Admin Dashboard Template For Developers">
+<meta name="author" content="Xiaoying Riley at 3rd Wave Media">
+<link rel="shortcut icon" href="/assets/images/app-logo.svg">
+
+<link rel="stylesheet" href="/assets/css/portal.css" media="all">
+
+
+</head>
+
+<body class="app">
+
+	<header th:replace="~{admin/layouts/header :: header}"></header>
+	<div class="app-wrapper">
+		<div class="app-content pt-3 p-md-3 p-lg-4">
+			<div class="container-xl">
+
+				<!-- HEADER -->
+				<div class="row g-3 mb-4 align-items-center justify-content-between">
+					<div class="col-auto">
+						<h1 class="app-page-title mb-0">
+							Khách hàng (<span th:text="${count}"></span>)
+						</h1>
+					</div>
+
+					<div class="col-auto">
+						<form class="table-search-form row gx-1 align-items-center"
+							th:action="@{/customers}" method="get">
+
+							<div class="col-auto">
+								<input type="text" name="keyword" th:value="${keyword}"
+									class="form-control search-orders"
+									placeholder="Tìm tên hoặc email...">
+							</div>
+
+							<div class="col-auto">
+								<button class="btn app-btn-secondary">Tìm kiếm</button>
+							</div>
+
+						</form>
+					</div>
+				</div>
+
+				<!-- TABLE -->
+				<div class="app-card app-card-orders-table shadow-sm mb-5">
+					<div class="app-card-body">
+						<div class="table-responsive">
+
+							<table class="table app-table-hover mb-0 text-left">
+
+								<thead>
+									<tr>
+										<th class="cell">ID</th>
+										<th class="cell">Tên</th>
+										<th class="cell">Email</th>
+										<th class="cell">Trạng thái</th>
+										<th class="cell">Ngày tạo</th>
+										<th class="cell">Hành động</th>
+									</tr>
+								</thead>
+
+								<tbody>
+
+									<tr th:each="u, index : ${customers}">
+
+										<td class="cell" th:text="${(page-1)*10 + index.index + 1}">
+										</td>
+
+										<td class="cell" th:text="${u.firstName}"></td>
+
+										<td class="cell" th:text="${u.email}"></td>
+
+										<!-- STATUS -->
+										<td class="cell"><span class="badge bg-success"
+											th:if="${u.status.name() == 'active'}"> Hoạt động </span> <span
+											class="badge bg-danger"
+											th:if="${u.status.name() != 'active'}"> Khóa </span></td>
+
+										<td class="cell"
+											th:text="${#temporals.format(u.createdAt,'dd/MM/yyyy')}">
+										</td>
+
+										<!-- ACTION -->
+										<td class="cell"><a class="btn-sm app-btn-secondary me-1"
+											th:if="${u.status.name() == 'active'}"
+											th:href="@{/customers/updateStatus(id=${u.id},status='inactive',page=${page})}"
+											onclick="return confirm('Khóa tài khoản này?');"> Khóa </a> <a
+											class="btn-sm app-btn-secondary me-1"
+											th:if="${u.status.name() != 'active'}"
+											th:href="@{/customers/updateStatus(id=${u.id},status='active',page=${page})}"
+											onclick="return confirm('Mở khóa tài khoản này?');"> Mở </a>
+
+											<a class="btn-sm app-btn-secondary"
+											th:href="@{/customers/delete(id=${u.id})}"
+											onclick="return confirm('Xóa khách hàng này?');"> Xóa </a></td>
+
+									</tr>
+
+								</tbody>
+
+							</table>
+
+						</div>
+					</div>
+				</div>
+
+				<!-- PAGINATION -->
+
+				<nav class="app-pagination">
+
+					<ul class="pagination justify-content-end">
+
+						<li class="page-item" th:if="${page > 1}"><a
+							class="page-link"
+							th:href="@{/customers(page=${page-1},keyword=${keyword})}"> «
+						</a></li>
+
+						<li class="page-item"
+							th:each="i : ${#numbers.sequence(1,totalPages)}"
+							th:classappend="${i==page}? 'active'"><a class="page-link"
+							th:text="${i}"
+							th:href="@{/customers(page=${i},keyword=${keyword})}"> </a></li>
+
+						<li class="page-item" th:if="${page < totalPages}"><a
+							class="page-link"
+							th:href="@{/customers(page=${page+1},keyword=${keyword})}"> »
+						</a></li>
+
+					</ul>
+
+				</nav>
+
+			</div>
+		</div>
+	</div>
+	<script src="/assets/js/all.min.js"></script>
+	<script src="/assets/plugins/popper.min.js"></script>
+	<script src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="/assets/plugins/chart.js/chart.min.js"></script>
+	<script src="/assets/js/index-charts.js"></script>
+	<script src="/assets/js/app.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+
+</html>

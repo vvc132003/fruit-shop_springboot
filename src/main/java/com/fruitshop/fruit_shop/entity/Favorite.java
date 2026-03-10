@@ -11,7 +11,8 @@ public class Favorite {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

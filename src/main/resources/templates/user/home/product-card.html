@@ -1,0 +1,46 @@
+<div th:fragment="productCard(item)">
+
+	<div class="rounded position-relative fruite-item">
+
+		<div class="fruite-img">
+			<a th:href="@{/shop_detail(id=${item.id})}"> <img
+				th:src="'data:image/jpeg;base64,' + ${item.image}"
+				class="img-fluid w-100 rounded-top" th:alt="${item.name}">
+			</a>
+		</div>
+		<div
+			class="text-white bg-secondary px-3 py-1 rounded position-absolute"
+			style="top: 10px; left: 10px;" th:text="${item.category.name}">
+		</div>
+
+		<div class="p-4 border border-secondary border-top-0 rounded-bottom">
+
+			<h4>
+				<a th:href="@{/shop_detail(id=${item.id})}"
+					class="text-dark text-decoration-none" th:text="${item.name}">
+				</a>
+			</h4>
+
+			<p th:text="${#strings.abbreviate(item.description,80)}"></p>
+
+			<div class="d-flex justify-content-between flex-lg-wrap">
+
+				<p class="text-dark fs-5 fw-bold mb-0"
+					th:text="${#numbers.formatDecimal(item.price,0,'COMMA',0,'POINT')} + ' đ / ' + ${item.unit}">
+				</p>
+
+				<button
+					class="btn border border-secondary rounded-pill px-3 text-primary add-to-cart"
+					th:data-id="${item.id}" th:disabled="${item.stock <= 0}">
+
+					<i class="fa fa-shopping-bag text-primary"></i>
+
+				</button>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</div>

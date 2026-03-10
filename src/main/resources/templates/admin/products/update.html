@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Cập nhật sản phẩm</title>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="description"
+	content="Portal - Bootstrap 5 Admin Dashboard Template For Developers">
+<meta name="author" content="Xiaoying Riley at 3rd Wave Media">
+<link rel="shortcut icon" href="/assets/images/app-logo.svg">
+
+<link rel="stylesheet" href="/assets/css/portal.css" media="all">
+</head>
+
+<body class="app">
+
+	<header th:replace="~{/admin/layouts/header :: header}"></header>
+	<div class="app-wrapper">
+		<div class="app-content pt-3 p-md-3 p-lg-4">
+			<div class="container-xl">
+
+				<div class="row g-3 mb-4 align-items-center justify-content-between">
+					<div class="col-auto">
+						<h1 class="app-page-title mb-0">Cập nhật sản phẩm</h1>
+					</div>
+
+					<div class="col-auto">
+						<div class="page-utilities">
+							<div
+								class="row g-2 justify-content-start justify-content-md-end align-items-center">
+								<div class="col-auto">
+									<a th:href="@{/products}" class="btn app-btn-secondary"> <i
+										class="fa fa-arrow-left"></i> Quay lại
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="g-4 settings-section">
+
+					<div class="col-12 col-md-12">
+						<div class="app-card app-card-settings shadow-sm p-4">
+							<div class="app-card-body">
+
+								<form th:action="@{/products/edit}" method="post"
+									enctype="multipart/form-data" class="settings-form">
+
+									<input type="hidden" name="id" th:value="${product.id}">
+
+									<div class="row">
+
+										<div class="col-6">
+
+											<div class="mb-3">
+												<label class="form-label">Tên sản phẩm</label> <input
+													type="text" class="form-control" name="name" id="name"
+													th:value="${product.name}" required>
+											</div>
+
+											<div class="mb-3">
+												<label class="form-label">Giá (VNĐ)</label> <input
+													type="number" name="price" id="price"
+													th:value="${product.price}" class="form-control" required>
+											</div>
+
+											<div class="mb-3">
+												<label class="form-label">Danh mục</label> <select
+													class="form-control" name="categoryId" id="category"
+													required>
+
+													<option value="">-- Chọn danh mục --</option>
+
+													<option th:each="c : ${categories}" th:value="${c.id}"
+														th:text="${c.name}"
+														th:selected="${product.category.id == c.id}"></option>
+
+												</select>
+
+											</div>
+
+											<div class="mb-3">
+												<label class="form-label">Hình ảnh hiện tại</label> <img
+													th:if="${product.image != null}"
+													th:src="'data:image/png;base64,' + ${product.image}"
+													style="width: 80px; height: 80px; object-fit: cover; border-radius: 5px; margin-bottom: 10px" />
+
+												<span th:if="${product.image == null}"> Chưa có ảnh </span>
+
+											</div>
+
+											<div class="mb-3">
+												<label class="form-label">Cập nhật hình ảnh mới</label> <input
+													class="form-control" type="file" name="imageFile"
+													id="image" accept="image/*">
+											</div>
+
+
+										</div>
+
+										<div class="col-6">
+
+											<div class="mb-3">
+												<label class="form-label">Mô tả</label> <input type="text"
+													name="description" th:value="${product.description}"
+													id="description" class="form-control" required>
+											</div>
+
+											<div class="mb-3">
+												<label class="form-label">Đơn vị bán</label> <input
+													type="text" name="unit" id="unit"
+													th:value="${product.unit}" class="form-control" required>
+											</div>
+
+											<div class="mb-3">
+												<label class="form-label">Hàng tồn</label> <input
+													type="number" name="stock" th:value="${product.stock}"
+													id="stock" class="form-control" required>
+											</div>
+
+											<div class="mb-3">
+												<label class="form-label">Trạng thái</label> <select
+													class="form-control" name="status" id="status" required>
+
+													<option value="active"
+														th:selected="${product.status.name() == 'active'}">
+														Hiển thị</option>
+
+													<option value="inactive"
+														th:selected="${product.status.name() == 'inactive'}">
+														Ẩn</option>
+
+												</select>
+
+											</div>
+
+										</div>
+
+									</div>
+
+									<div class="form-actions"
+										style="display: flex; justify-content: end;">
+
+										<button type="submit" class="btn app-btn-primary">
+											Cập nhật sản phẩm</button>
+
+									</div>
+
+								</form>
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
+
+	<script src="/assets/js/all.min.js"></script>
+	<script src="/assets/plugins/popper.min.js"></script>
+	<script src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="/assets/plugins/chart.js/chart.min.js"></script>
+	<script src="/assets/js/index-charts.js"></script>
+	<script src="/assets/js/app.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+
+</html>

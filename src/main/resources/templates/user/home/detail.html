@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title th:text="${product.name}">Chi tiết sản phẩm</title>
+<!-- <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css"> -->
+<!-- Google Web Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap"
+	rel="stylesheet">
+
+<!-- Icon Font Stylesheet -->
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+	rel="stylesheet">
+
+<!-- Libraries Stylesheet -->
+<link href="/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+<link href="/lib/owlcarousel/assets/owl.carousel.min.css"
+	rel="stylesheet">
+<link rel="shortcut icon" href="/assets/images/app-logo.svg">
+
+
+<!-- Customized Bootstrap Stylesheet -->
+<link href="/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Template Stylesheet -->
+<link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+	<!-- Spinner Start -->
+	<div id="spinner"
+		class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+		<div class="spinner-grow text-primary" role="status"></div>
+	</div>
+	<!-- Spinner End -->
+	<div th:replace="~{user/layouts/header :: header}"></div>
+	<div class="container-fluid page-header py-5">
+		<h1 class="text-center text-white display-6">Chi tiết sản phẩm</h1>
+		<ol class="breadcrumb justify-content-center mb-0">
+			<li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+			<li class="breadcrumb-item"><a href="#">Trang</a></li>
+			<li class="breadcrumb-item active text-white">Chi tiết sản phẩml</li>
+		</ol>
+	</div>
+	<div class="container-fluid py-5 mt-5">
+		<div class="container py-5">
+			<div class="row g-4 mb-5">
+
+				<!-- LEFT -->
+				<div class="col-lg-8 col-xl-9">
+					<div class="row g-4">
+
+						<!-- PRODUCT IMAGE -->
+						<div class="col-lg-6">
+							<div class="border rounded">
+								<a href="#"> <img
+									th:src="'data:image/png;base64,' + ${product.image}"
+									class="img-fluid rounded w-100"
+									style="max-height: 500px; object-fit: cover;"
+									th:alt="${product.name}">
+								</a>
+							</div>
+						</div>
+
+						<!-- PRODUCT INFO -->
+						<div class="col-lg-6">
+
+							<h4 class="fw-bold mb-3" th:text="${product.name}"></h4>
+
+							<p class="mb-3">
+								Loại sản phẩm: <span th:text="${product.category.name}"></span>
+							</p>
+
+							<!-- PRICE + FAVORITE -->
+							<div class="position-relative">
+
+								<h5 class="fw-bold mb-3">
+									<span
+										th:text="${#numbers.formatDecimal(product.price,0,'COMMA',0,'POINT')}"></span>
+									đ
+								</h5>
+
+								<span
+									class="position-absolute top-0 end-0 m-2
+                 bg-white px-2 py-1 rounded-pill shadow-sm
+                 text-danger fw-bold small">
+
+									<i class="fa fa-heart"></i> <span th:text="${favoritesCount}"></span>
+
+								</span>
+							</div>
+
+							<!-- RATING -->
+							<div class="d-flex mb-4">
+								<i class="fa fa-star text-secondary"></i> <i
+									class="fa fa-star text-secondary"></i> <i
+									class="fa fa-star text-secondary"></i> <i
+									class="fa fa-star text-secondary"></i> <i class="fa fa-star"></i>
+							</div>
+
+							<!-- DESCRIPTION -->
+							<p class="mb-4" th:text="${product.description}"></p>
+
+							<!-- QUANTITY -->
+							<div class="input-group quantity mb-5" style="width: 100px;">
+
+								<div class="input-group-btn">
+									<button
+										class="btn btn-sm btn-minus rounded-circle bg-light border">
+										<i class="fa fa-minus"></i>
+									</button>
+								</div>
+
+								<input type="text"
+									class="form-control form-control-sm text-center border-0"
+									value="1">
+
+								<div class="input-group-btn">
+									<button
+										class="btn btn-sm btn-plus rounded-circle bg-light border">
+										<i class="fa fa-plus"></i>
+									</button>
+								</div>
+
+							</div>
+
+							<!-- ACTION BUTTON -->
+							<div class="d-flex gap-2">
+
+								<button
+									class="btn border border-secondary rounded-pill px-3 text-primary add-to-cart"
+									th:attr="data-id=${product.id}">
+
+									<i class="fa fa-shopping-bag me-2 text-primary"></i> Thêm vào
+									giỏ hàng
+
+								</button>
+
+								<a th:href="@{/favorite/toggle(product_id=${product.id})}"
+									class="btn border border-danger rounded-pill px-3 text-secondary">
+
+									<i class="fa fa-heart me-2"></i> Yêu thích
+
+								</a>
+
+							</div>
+
+						</div>
+
+						<!-- TABS -->
+						<div class="col-lg-12">
+
+							<nav>
+								<div class="nav nav-tabs mb-3">
+
+									<button class="nav-link active border-white border-bottom-0"
+										type="button" id="nav-about-tab" data-bs-toggle="tab"
+										data-bs-target="#nav-about">Nội dung</button>
+
+									<button class="nav-link border-white border-bottom-0"
+										type="button" id="nav-mission-tab" data-bs-toggle="tab"
+										data-bs-target="#nav-mission">Bình luận</button>
+
+								</div>
+							</nav>
+
+							<div class="tab-content mb-5">
+
+								<!-- DESCRIPTION -->
+								<div class="tab-pane active" id="nav-about">
+
+									<p th:text="${product.description}"></p>
+
+								</div>
+
+								<!-- COMMENTS -->
+								<div class="tab-pane" id="nav-mission">
+
+									<div th:if="${#lists.isEmpty(comments)}" class="text-muted">
+
+										Chưa có bình luận nào.</div>
+
+									<div th:each="comment : ${comments}" class="d-flex">
+
+										<img src="/img/avatar.jpg"
+											class="img-fluid rounded-circle p-3"
+											style="width: 100px; height: 100px">
+
+										<div>
+
+											<p class="mb-2" style="font-size: 14px;"
+												th:text="${#temporals.format(comment.createdAt,'dd/MM/yyyy')}">
+											</p>
+
+											<div class="d-flex justify-content-between">
+
+												<h5
+													th:text="${comment.user.firstName + ' ' + comment.user.lastName}"></h5>
+
+												<div class="d-flex mb-3">
+
+													<i class="fa fa-star text-secondary"></i> <i
+														class="fa fa-star text-secondary"></i> <i
+														class="fa fa-star text-secondary"></i> <i
+														class="fa fa-star text-secondary"></i> <i
+														class="fa fa-star"></i>
+
+												</div>
+
+											</div>
+
+											<p th:text="${comment.content}"></p>
+
+										</div>
+
+									</div>
+
+								</div>
+
+							</div>
+
+						</div>
+
+						<!-- COMMENT FORM -->
+						<form th:action="@{/comment/store}" method="post">
+
+							<h4 class="mb-5 fw-bold">Bình luận</h4>
+
+							<input type="hidden" name="productId" th:value="${product.id}">
+
+							<div class="row g-4">
+
+								<div class="col-lg-12">
+
+									<div class="border-bottom rounded my-4">
+
+										<textarea name="content" id="content"
+											class="form-control border-0" cols="30" rows="8"
+											placeholder="Nhập bình luận *"></textarea>
+
+										<style>
+#content::placeholder {
+	color: #6c757d;
+	opacity: 1;
+}
+</style>
+										</textarea>
+
+									</div>
+
+								</div>
+
+								<div class="col-lg-12">
+
+									<div class="d-flex justify-content-between py-3 mb-5">
+
+										<div class="d-flex align-items-center">
+
+											<p class="mb-0 me-3">Sao:</p>
+
+											<div class="d-flex align-items-center"
+												style="font-size: 12px">
+
+												<i class="fa fa-star text-muted"></i> <i class="fa fa-star"></i>
+												<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i
+													class="fa fa-star"></i>
+
+											</div>
+
+										</div>
+
+										<button type="submit"
+											class="btn border border-secondary text-primary rounded-pill px-4 py-3">
+
+											Gửi bình luận</button>
+
+									</div>
+
+								</div>
+
+							</div>
+
+						</form>
+						<div th:if="${!#lists.isEmpty(comments)}">
+
+							<div th:each="comment : ${comments}"
+								th:if="${comment.status.name() != 'pending' or session.user != null}"
+								class="d-flex mb-4"
+								th:style="${comment.status.name() == 'pending'} ? 'opacity:0.5;' : ''">
+
+								<img src="/img/avatar.jpg" class="img-fluid rounded-circle p-3"
+									style="width: 100px; height: 100px;" alt="Avatar">
+
+								<div>
+
+									<p class="mb-2" style="font-size: 14px;">
+
+										<span
+											th:text="${#temporals.format(comment.createdAt,'dd/MM/yyyy')}"></span>
+
+										<span th:if="${comment.status.name() == 'pending'}"
+											class="text-warning fst-italic"> (Đang chờ duyệt) </span>
+
+									</p>
+
+									<div class="d-flex justify-content-between">
+
+										<h5
+											th:text="${comment.user.firstName + ' ' + comment.user.lastName}"></h5>
+
+										<div class="d-flex mb-3">
+											<i class="fa fa-star text-secondary"></i> <i
+												class="fa fa-star text-secondary"></i> <i
+												class="fa fa-star text-secondary"></i> <i
+												class="fa fa-star text-secondary"></i> <i class="fa fa-star"></i>
+										</div>
+
+									</div>
+
+									<p
+										th:utext="${#strings.replace(comment.content, '\n', '<br/>')}"></p>
+
+								</div>
+
+							</div>
+
+						</div>
+
+						<p th:if="${#lists.isEmpty(comments)}" class="text-muted">
+
+							Chưa có bình luận nào.</p>
+					</div>
+				</div>
+
+				<!-- RIGHT SIDEBAR -->
+				<div class="col-lg-4 col-xl-3">
+
+					<div class="row g-4 fruite">
+
+						<!-- FEATURED PRODUCTS -->
+						<div class="col-lg-12">
+
+							<h4 class="mb-4">Sản phẩm nổi bật</h4>
+
+							<div th:each="p : ${featuredProducts}"
+								class="d-flex align-items-center justify-content-start mb-3">
+
+								<div class="rounded me-4" style="width: 100px; height: 100px">
+
+									<img th:src="'data:image/jpeg;base64,' + ${p.image}"
+										class="img-fluid rounded">
+
+								</div>
+
+								<div>
+
+									<h6 class="mb-2" th:text="${p.name}"></h6>
+
+									<div class="d-flex mb-2">
+
+										<i class="fa fa-star text-secondary"></i> <i
+											class="fa fa-star text-secondary"></i> <i
+											class="fa fa-star text-secondary"></i> <i
+											class="fa fa-star text-secondary"></i> <i class="fa fa-star"></i>
+
+									</div>
+
+									<h5 class="fw-bold me-2" th:text="${p.price}"></h5>
+
+								</div>
+
+							</div>
+
+						</div>
+						<div class="col-lg-12">
+							<div class="position-relative">
+								<img src="/img/banner-fruits.jpg"
+									class="img-fluid w-100 rounded" alt="">
+								<div class="position-absolute"
+									style="top: 50%; right: 10px; transform: translateY(-50%);">
+									<h3 class="text-secondary fw-bold">
+										Fresh <br> Fruits <br> Banner
+									</h3>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+			<!-- RELATED PRODUCTS -->
+			<h1 class="fw-bold mb-0">Sản phẩm liên quan</h1>
+			<div class="vesitable">
+				<div class="owl-carousel vegetable-carousel justify-content-center">
+					<div th:each="item : ${relatedProducts}"
+						class="border border-primary rounded position-relative vesitable-item">
+						<div class="vesitable-img">
+							<img th:src="'data:image/jpeg;base64,' + ${item.image}"
+								class="img-fluid w-100 rounded-top">
+						</div>
+						<div
+							class="text-white bg-primary px-3 py-1 rounded position-absolute"
+							style="top: 10px; right: 10px" th:text="${item.category.name}">
+						</div>
+						<div class="p-4 pb-0 rounded-bottom">
+							<h4 th:text="${item.name}"></h4>
+							<div class="d-flex justify-content-between flex-lg-wrap">
+								<p class="text-dark fs-5 fw-bold" th:text="${item.price}"></p>
+								<a th:href="@{/shop_detail(id=${item.id})}"
+									class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary">
+									Xem chi tiết </a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:replace="~{user/layouts/footer :: footer}"></div>
+
+	<!-- Back to Top -->
+	<a href="#"
+		class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
+		class="fa fa-arrow-up"></i></a>
+
+
+	<!-- JavaScript Libraries -->
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="/lib/easing/easing.min.js"></script>
+	<script src="/lib/waypoints/waypoints.min.js"></script>
+	<script src="/lib/lightbox/js/lightbox.min.js"></script>
+	<script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+
+	<!-- Template Javascript -->
+	<script src="/js/main.js"></script>
+
+</body>
+
+</html>

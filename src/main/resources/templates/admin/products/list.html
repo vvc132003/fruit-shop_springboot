@@ -13,6 +13,7 @@
 	content="Portal - Bootstrap 5 Admin Dashboard Template For Developers">
 <meta name="author" content="Xiaoying Riley at 3rd Wave Media">
 <link rel="stylesheet" href="/assets/css/portal.css" media="all">
+<link rel="shortcut icon" href="/assets/images/app-logo.svg">
 
 
 </head>
@@ -20,7 +21,157 @@
 <body class="app">
 
 	<header th:replace="~{admin/layouts/header :: header}"></header>
+	<div class="app-wrapper">
 
+		<div class="app-content pt-3 p-md-3 p-lg-4">
+			<div class="container-xl">
+
+				<div class="row g-3 mb-4 align-items-center justify-content-between">
+					<div class="col-auto">
+						<h1 class="app-page-title mb-0">
+							Sản phẩm (<span th:text="${count}"></span>)
+						</h1>
+					</div>
+
+					<div class="col-auto">
+						<div class="page-utilities">
+							<div
+								class="row g-2 justify-content-start justify-content-md-end align-items-center">
+
+								<div class="col-auto">
+									<a th:href="@{/products/create}" class="btn app-btn-secondary">
+										<i class="fa fa-plus"></i> Thêm sản phẩm
+									</a>
+								</div>
+
+								<div class="col-auto">
+									<form class="table-search-form row gx-1 align-items-center">
+										<div class="col-auto">
+											<input type="text" name="keyword" th:value="${keyword}"
+												class="form-control search-orders" placeholder="Tìm kiếm...">
+										</div>
+
+										<div class="col-auto">
+											<button type="submit" class="btn app-btn-secondary">
+												Tìm kiếm</button>
+										</div>
+									</form>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div th:if="${success}"
+					class="alert alert-success alert-dismissible fade show">
+					<span th:text="${success}"></span>
+
+					<button type="button" class="btn-close" data-bs-dismiss="alert">
+					</button>
+				</div>
+
+				<div class="tab-content">
+					<div class="tab-pane fade show active">
+
+						<div class="app-card app-card-orders-table shadow-sm mb-5">
+							<div class="app-card-body">
+
+								<div class="table-responsive">
+
+									<table class="table app-table-hover mb-0 text-left">
+										<thead>
+											<tr>
+												<th class="cell">ID</th>
+												<th class="cell">Ảnh</th>
+												<th class="cell">Tên</th>
+												<th class="cell">Loại sản phẩm</th>
+												<th class="cell">Giá</th>
+												<th class="cell">Tồn kho</th>
+												<th class="cell">Trạng thái</th>
+												<th class="cell">Hành động</th>
+											</tr>
+										</thead>
+
+										<tbody>
+
+											<tr th:each="p, stat : ${products}">
+												<td class="cell" th:text="${(page-1)*10 + stat.index + 1}">
+												</td>
+
+												<td class="cell"><img th:if="${p.image != null}"
+													th:src="'data:image/png;base64,' + ${p.image}"
+													style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px" />
+
+													<span th:if="${p.image == null}"> Chưa có ảnh </span></td>
+												<td class="cell" th:text="${p.name}"></td>
+
+												<td class="cell" th:text="${p.category.name}"></td>
+
+												<td class="cell"
+													th:text="${#numbers.formatDecimal(p.price,0,'COMMA',0,'POINT')} + ' đ'">
+												</td>
+
+												<td class="cell" th:text="${p.stock}"></td>
+
+
+												<td class="cell"><span
+													th:if="${p.status.name() == 'active'}"
+													class="badge bg-success"> Đang bán </span> <span
+													th:if="${p.status.name() == 'inactive'}"
+													class="badge bg-danger"> Ngừng bán </span></td>
+
+												<td class="cell"><a
+													class="btn-sm app-btn-secondary me-1"
+													th:href="@{/products/update(id=${p.id})}"> Sửa </a> <a
+													class="btn-sm app-btn-secondary"
+													th:href="@{/products/delete(id=${p.id})}"
+													onclick="return confirm('Bạn có chắc muốn xóa?')"> Xóa
+												</a></td>
+
+											</tr>
+
+										</tbody>
+									</table>
+
+								</div>
+							</div>
+						</div>
+
+
+						<!-- pagination -->
+
+						<nav class="app-pagination">
+
+							<ul class="pagination justify-content-end">
+
+								<li class="page-item" th:if="${page > 1}"><a
+									class="page-link"
+									th:href="@{/products(page=${page-1},keyword=${keyword})}">
+										« </a></li>
+
+								<li class="page-item"
+									th:each="i : ${#numbers.sequence(1,totalPages)}"
+									th:classappend="${i==page} ? 'active'"><a
+									class="page-link" th:text="${i}"
+									th:href="@{/products(page=${i},keyword=${keyword})}"> </a></li>
+
+								<li class="page-item" th:if="${page < totalPages}"><a
+									class="page-link"
+									th:href="@{/products(page=${page+1},keyword=${keyword})}">
+										» </a></li>
+
+							</ul>
+
+						</nav>
+
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
 
 	<script src="/assets/js/all.min.js"></script>
 	<script src="/assets/plugins/popper.min.js"></script>

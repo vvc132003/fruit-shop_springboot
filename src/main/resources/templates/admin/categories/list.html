@@ -13,6 +13,7 @@
 	content="Portal - Bootstrap 5 Admin Dashboard Template For Developers">
 <meta name="author" content="Xiaoying Riley at 3rd Wave Media">
 <link rel="stylesheet" href="/assets/css/portal.css" media="all">
+<link rel="shortcut icon" href="/assets/images/app-logo.svg">
 
 
 </head>
@@ -66,7 +67,13 @@
 					<!--//col-auto-->
 				</div>
 				<!--//row-->
+				<div th:if="${success}"
+					class="alert alert-success alert-dismissible fade show">
+					<span th:text="${success}"></span>
 
+					<button type="button" class="btn-close" data-bs-dismiss="alert">
+					</button>
+				</div>
 				<div class="tab-content" id="orders-table-tab-content">
 					<div class="tab-pane fade show active" id="orders-all"
 						role="tabpanel" aria-labelledby="orders-all-tab">
@@ -91,8 +98,8 @@
 
 												<td class="cell"><a
 													class="btn-sm app-btn-secondary me-1"
-													th:href="@{/categories/update(id=${cat.id})}"> Sửa </a>
-													<a class="btn-sm app-btn-secondary"
+													th:href="@{/categories/update(id=${cat.id})}"> Sửa </a> <a
+													class="btn-sm app-btn-secondary"
 													th:href="@{/categories/delete(id=${cat.id})}"
 													onclick="return confirm('Bạn có chắc muốn xóa?')"> Xóa
 												</a></td>

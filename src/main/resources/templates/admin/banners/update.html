@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Cập nhật thiết lập</title>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="description"
+	content="Portal - Bootstrap 5 Admin Dashboard Template For Developers">
+<meta name="author" content="Xiaoying Riley at 3rd Wave Media">
+<link rel="stylesheet" href="/assets/css/portal.css" media="all">
+<link rel="shortcut icon" href="/assets/images/app-logo.svg">
+
+
+</head>
+
+<body class="app">
+
+	<header th:replace="~{/admin/layouts/header :: header}"></header>
+	<div class="app-wrapper">
+		<div class="app-content pt-3 p-md-3 p-lg-4">
+			<div class="container-xl">
+
+				<!-- HEADER -->
+				<div class="row g-3 mb-4 align-items-center justify-content-between">
+					<div class="col-auto">
+
+						<h1 class="app-page-title mb-0"
+							th:text="${banner != null && banner.id != null} ? 'Cập nhật banner' : 'Thêm banner'">
+						</h1>
+
+					</div>
+
+					<div class="col-auto">
+						<a th:href="@{/banners}" class="btn app-btn-secondary">
+							<i class="fa fa-arrow-left"></i> Quay lại
+						</a>
+					</div>
+				</div>
+
+				<!-- FORM -->
+				<div class="g-4 settings-section">
+					<div class="col-12">
+						<div class="app-card app-card-settings shadow-sm p-4">
+							<div class="app-card-body">
+
+								<form th:action="@{/banners/edit}" method="post"
+									enctype="multipart/form-data" class="settings-form"
+									th:object="${banner}">
+
+									<!-- ID -->
+									<input type="hidden" th:field="*{id}">
+
+									<!-- OLD IMAGE -->
+									<input type="hidden" name="old_image"
+										th:value="${banner.image}">
+
+									<!-- TITLE -->
+									<div class="mb-3">
+										<label class="form-label">Tiêu đề banner</label> <input
+											type="text" class="form-control" th:field="*{title}">
+									</div>
+
+									<!-- DESCRIPTION -->
+									<div class="mb-3">
+										<label class="form-label">Mô tả</label>
+										<textarea class="form-control" th:field="*{description}"
+											rows="3"></textarea>
+									</div>
+
+									<!-- IMAGE -->
+									<div class="mb-3">
+
+										<label class="form-label">Hình ảnh</label>
+
+										<div class="mb-2">
+											<img th:src="${banner.image}" width="250"
+												class="img-thumbnail">
+										</div>
+
+										<input type="file" class="form-control" name="file"
+											accept="image/*">
+									</div>
+
+									<!-- LINK -->
+									<div class="mb-3">
+										<label class="form-label">Link khi click</label> <input
+											type="text" class="form-control" th:field="*{link}">
+									</div>
+
+									<!-- POSITION -->
+									<div class="mb-3">
+										<label class="form-label">Vị trí hiển thị</label> <select
+											th:field="*{position}" class="form-control">
+											<option value="home_slider">Slider</option>
+											<option value="home_top">Header</option>
+										</select>
+									</div>
+
+									<!-- STATUS -->
+									<div class="mb-3">
+										<label class="form-label">Trạng thái</label> <select
+											th:field="*{status}" class="form-control">
+											<option value="active">Hiển thị</option>
+											<option value="inactive">Ẩn</option>
+										</select>
+									</div>
+
+									<div class="form-actions"
+										style="display: flex; justify-content: end;">
+										<button type="submit" class="btn app-btn-primary">Cập
+											nhật banner</button>
+									</div>
+
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<script src="/assets/js/all.min.js"></script>
+	<script src="/assets/plugins/popper.min.js"></script>
+	<script src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="/assets/plugins/chart.js/chart.min.js"></script>
+	<script src="/assets/js/index-charts.js"></script>
+	<script src="/assets/js/app.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+
+</html>

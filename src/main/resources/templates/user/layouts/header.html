@@ -1,0 +1,143 @@
+
+<!-- Navbar start -->
+<div th:fragment="header" class="container-fluid fixed-top">
+	<div class="container topbar bg-primary d-none d-lg-block">
+		<div class="d-flex justify-content-between">
+			<div class="top-info ps-2">
+				<small class="me-3"> <i
+					class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#"
+					class="text-white">Đường 123, Việt Nam</a>
+				</small> <small class="me-3"> <i
+					class="fas fa-envelope me-2 text-secondary"></i> <a href="#"
+					class="text-white">traicay_r@gmail.com</a>
+				</small>
+			</div>
+
+			<div class="top-link pe-2">
+				<a href="#" class="text-white"> <small class="text-white mx-2">Chính
+						sách bảo mật</small> /
+				</a> <a href="#" class="text-white"> <small class="text-white mx-2">Điều
+						khoản sử dụng</small> /
+				</a> <a href="#" class="text-white"> <small class="text-white ms-2">Bán
+						hàng và hoàn tiền</small>
+				</a>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="container px-0">
+
+		<nav class="navbar navbar-light bg-white navbar-expand-xl">
+
+			<a th:href="@{/}" class="navbar-brand">
+				<h1 class="text-primary display-6">SmartShop</h1>
+			</a>
+
+
+			<button class="navbar-toggler py-2 px-3" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+				<span class="fa fa-bars text-primary"></span>
+			</button>
+
+
+			<div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+
+				<div class="navbar-nav mx-auto">
+
+					<a th:href="@{/}" class="nav-item nav-link"
+						th:classappend="${currentUri == '/'} ? 'active'"> Trang chủ </a> <a
+						th:href="@{/fruitables/shop}" class="nav-item nav-link"
+						th:classappend="${currentUri == '/fruitables/shop'} ? 'active'">
+						Của hàng </a>
+
+
+					<div class="nav-item dropdown">
+						<a href="#" class="nav-link dropdown-toggle"
+							data-bs-toggle="dropdown">Trang</a>
+
+						<div class="dropdown-menu m-0 bg-secondary rounded-0">
+
+							<a th:href="@{/fruitables/cart}" class="dropdown-item"> Giỏ
+								hàng </a> <a th:href="@{/fruitables/checkout}" class="dropdown-item">
+								Đặt hàng </a>
+
+						</div>
+					</div>
+
+					<a th:href="@{/contact}" class="nav-item nav-link"> Liên hệ </a>
+
+				</div>
+
+
+				<div class="d-flex m-3 me-0">
+
+					<button
+						class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4"
+						data-bs-toggle="modal" data-bs-target="#searchModal">
+						<i class="fas fa-search text-primary"></i>
+					</button>
+
+					<a th:href="@{/fruitables/cart}"
+						class="position-relative me-4 my-auto"> <i
+						class="fa fa-shopping-bag fa-2x"></i> <!-- cart count --> <span
+						th:if="${cartCount > 0}" id="cart-count"
+						class="position-absolute bg-secondary rounded-circle
+                     d-flex align-items-center justify-content-center
+                     text-dark px-1"
+						style="top: -5px; left: 15px; height: 20px; min-width: 20px;"
+						th:text="${cartCount}"> </span>
+
+					</a>
+
+					<!-- nếu đã login -->
+					<div th:if="${session.user != null}" class="dropdown my-auto">
+
+						<a href="#" class="dropdown-toggle text-dark"
+							data-bs-toggle="dropdown"
+							th:text="${session.user.firstName + ' ' + session.user.lastName}">
+						</a>
+
+						<ul class="dropdown-menu dropdown-menu-end">
+
+							<!-- admin -->
+							<li th:if="${session.user.role.name() == 'admin'}"><a
+								class="dropdown-item" th:href="@{/dashboard}"> Quản trị </a></li>
+
+							<li><a class="dropdown-item" th:href="@{/order/history}">
+									<i class="fa fa-receipt me-2"></i> Lịch sử mua hàng
+							</a></li>
+
+							<li><a class="dropdown-item" th:href="@{/comment/history}">
+									<i class="fa fa-comments me-2"></i> Lịch sử bình luận
+							</a></li>
+
+							<li><a class="dropdown-item" th:href="@{/favorite/history}">
+									<i class="fa fa-heart me-2 text-danger"></i> Lịch sử yêu thích
+							</a></li>
+
+							<li><a class="dropdown-item"
+								th:href="@{/auth/changePassword}"> 🔐 Đổi mật khẩu </a></li>
+
+							<li><a class="dropdown-item" th:href="@{/auth/logout}">
+									<i class="fa fa-sign-out-alt me-2"></i> Đăng xuất
+							</a></li>
+
+						</ul>
+					</div>
+
+					<!-- nếu chưa login -->
+					<a th:if="${session.user == null}" th:href="@{/auth/login}"
+						class="my-auto"> <i class="fas fa-user fa-2x"></i>
+
+					</a>
+
+				</div>
+
+			</div>
+
+		</nav>
+
+	</div>
+</div>
+<!-- Navbar End -->

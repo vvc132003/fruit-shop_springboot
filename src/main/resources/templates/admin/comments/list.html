@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Bình luận</title>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="description"
+	content="Portal - Bootstrap 5 Admin Dashboard Template For Developers">
+<meta name="author" content="Xiaoying Riley at 3rd Wave Media">
+<link rel="shortcut icon" href="/assets/images/app-logo.svg">
+
+<link rel="stylesheet" href="/assets/css/portal.css" media="all">
+
+
+</head>
+
+<body class="app">
+
+	<header th:replace="~{admin/layouts/header :: header}"></header>
+	<div class="app-wrapper">
+		<div class="app-content pt-3 p-md-3 p-lg-4">
+			<div class="container-xl">
+
+				<!-- HEADER -->
+				<div class="row g-3 mb-4 align-items-center justify-content-between">
+					<div class="col-auto">
+						<h1 class="app-page-title mb-0">
+							Bình luận (<span th:text="${count}"></span>)
+						</h1>
+					</div>
+
+					<div class="col-auto">
+						<form class="table-search-form row gx-1 align-items-center"
+							th:action="@{/comments}" method="get">
+
+							<div class="col-auto">
+								<input type="text" name="keyword" th:value="${keyword}"
+									class="form-control search-orders"
+									placeholder="Tìm nội dung bình luận">
+							</div>
+
+							<div class="col-auto">
+								<button class="btn app-btn-secondary">Tìm kiếm</button>
+							</div>
+
+						</form>
+					</div>
+				</div>
+
+				<!-- TABLE -->
+				<div class="app-card app-card-orders-table shadow-sm mb-5">
+					<div class="app-card-body">
+						<div class="table-responsive">
+
+							<table class="table app-table-hover mb-0 text-left">
+
+								<thead>
+									<tr>
+										<th class="cell">ID</th>
+										<th class="cell">Khách hàng</th>
+										<th class="cell">Sản phẩm</th>
+										<th class="cell">Nội dung</th>
+										<th class="cell">Trạng thái</th>
+										<th class="cell">Ngày</th>
+										<th class="cell">Hành động</th>
+									</tr>
+								</thead>
+
+								<tbody>
+
+									<tr th:each="c, index : ${comments}">
+
+										<td class="cell" th:text="${(page-1)*10 + index.index + 1}">
+										</td>
+
+										<td class="cell"
+											th:text="${c.user.firstName + ' ' + c.user.lastName}"></td>
+
+										<td class="cell" th:text="${c.product.name}"></td>
+
+										<td class="cell" th:text="${c.content}"></td>
+
+										<td class="cell"><span class="badge bg-success"
+											th:if="${c.status.name() == 'approved'}"> Đã duyệt </span> <span
+											class="badge bg-warning"
+											th:if="${c.status.name() == 'pending'}"> Chờ duyệt </span> <span
+											class="badge bg-danger"
+											th:if="${c.status.name() == 'rejected'}"> Từ chối </span></td>
+
+										<td class="cell"
+											th:text="${#temporals.format(c.createdAt,'dd/MM/yyyy')}">
+										</td>
+
+										<td class="cell"><a class="btn-sm app-btn-secondary me-1"
+											th:if="${c.status.name() == 'pending'}"
+											th:href="@{/comments/updateStatus(id=${c.id},status='approved',page=${page})}">
+												Duyệt </a> <a class="btn-sm app-btn-secondary"
+											th:if="${c.status.name() == 'pending'}"
+											th:href="@{/comments/updateStatus(id=${c.id},status='rejected',page=${page})}">
+												Từ chối </a></td>
+
+									</tr>
+
+								</tbody>
+
+							</table>
+
+						</div>
+					</div>
+				</div>
+
+				<!-- PAGINATION -->
+
+				<nav class="app-pagination">
+
+					<ul class="pagination justify-content-end">
+
+						<li class="page-item" th:if="${page > 1}"><a
+							class="page-link"
+							th:href="@{/comments(page=${page-1},keyword=${keyword})}"> «
+						</a></li>
+
+						<li class="page-item"
+							th:each="i : ${#numbers.sequence(1,totalPages)}"
+							th:classappend="${i==page}? 'active'"><a class="page-link"
+							th:text="${i}"
+							th:href="@{/comments(page=${i},keyword=${keyword})}"> </a></li>
+
+						<li class="page-item" th:if="${page < totalPages}"><a
+							class="page-link"
+							th:href="@{/comments(page=${page+1},keyword=${keyword})}"> »
+						</a></li>
+
+					</ul>
+
+				</nav>
+
+			</div>
+		</div>
+	</div>
+	<script src="/assets/js/all.min.js"></script>
+	<script src="/assets/plugins/popper.min.js"></script>
+	<script src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="/assets/plugins/chart.js/chart.min.js"></script>
+	<script src="/assets/js/index-charts.js"></script>
+	<script src="/assets/js/app.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+
+</html>

@@ -1,4 +1,3 @@
-
 <header th:fragment="header" class="app-header fixed-top">
 	<div class="app-header-inner">
 		<div class="container-fluid py-2">
@@ -173,8 +172,8 @@
 					</a> <!--//nav-link--></li>
 					<!--//nav-item-->
 					<li class="nav-item"><a class="nav-link "
-						th:classappend="${currentUri.startsWith('/customers')} ? 'active'"
-						th:href="@{/customers}"> <span class="nav-icon"> <svg
+						th:classappend="${currentUri.startsWith('/comments')} ? 'active'"
+						th:href="@{/comments}"> <span class="nav-icon"> <svg
 									width="1em" height="1em" viewBox="0 0 16 16"
 									class="bi bi-chat-dots" fill="currentColor"
 									xmlns="http://www.w3.org/2000/svg">
@@ -186,8 +185,8 @@
 						</span> <span class="nav-link-text">Bình luận</span>
 					</a></li>
 					<li class="nav-item"><a class="nav-link"
-						th:classappend="${currentUri.startsWith('/customers')} ? 'active'"
-						th:href="@{/customers}"> <span class="nav-icon"> <svg
+						th:classappend="${currentUri.startsWith('/favorites')} ? 'active'"
+						th:href="@{/favorites}"> <span class="nav-icon"> <svg
 									width="1em" height="1em" viewBox="0 0 16 16"
 									class="bi bi-heart" fill="currentColor"
 									xmlns="http://www.w3.org/2000/svg">
@@ -208,7 +207,9 @@
 					<ul class="app-menu footer-menu list-unstyled">
 						<li class="nav-item">
 							<!--//Bootstrap Icons: https://icons.getbootstrap.com/ --> <a
-							class="nav-link"> <span class="nav-icon"> <svg
+							class="nav-link"
+							th:classappend="${currentUri.startsWith('/banners')} ? 'active'"
+							th:href="@{/banners}"> <span class="nav-icon"> <svg
 										width="1em" height="1em" viewBox="0 0 16 16"
 										class="bi bi-gear" fill="currentColor"
 										xmlns="http://www.w3.org/2000/svg">
@@ -222,6 +223,7 @@
 						</li>
 						<!--//nav-item-->
 					</ul>
+					<!--//footer-menu-->
 					<!--//footer-menu-->
 				</nav>
 			</div>
