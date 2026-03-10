@@ -1,5 +1,6 @@
 package com.fruitshop.fruit_shop.controller;
 
+import com.fruitshop.fruit_shop.annotation.AdminOnly;
 import com.fruitshop.fruit_shop.entity.User;
 import com.fruitshop.fruit_shop.service.CustomerService;
 
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+@AdminOnly
 @Controller
 @RequestMapping("/customers")
 public class CustomerController {

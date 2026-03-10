@@ -1,5 +1,6 @@
 package com.fruitshop.fruit_shop.controller;
 
+import com.fruitshop.fruit_shop.annotation.AdminOnly;
 import com.fruitshop.fruit_shop.entity.Banner;
 import com.fruitshop.fruit_shop.service.BannerService;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+@AdminOnly
 @Controller
 @RequestMapping("/banners")
 public class BannerController {
@@ -56,7 +58,8 @@ public class BannerController {
 	}
 
 	@PostMapping("/store")
-	public String store(@ModelAttribute Banner banner, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
+	public String store(@ModelAttribute Banner banner, @RequestParam("file") MultipartFile file,
+			RedirectAttributes redirectAttributes) {
 
 		bannerService.create(banner, file);
 		redirectAttributes.addFlashAttribute("success", "Thêm thành công!");
@@ -76,13 +79,14 @@ public class BannerController {
 	@PostMapping("/edit")
 	public String update(@ModelAttribute Banner banner,
 			@RequestParam(value = "file", required = false) MultipartFile file,
-			@RequestParam(value = "old_image", required = false) String oldImage, RedirectAttributes redirectAttributes) {
+			@RequestParam(value = "old_image", required = false) String oldImage,
+			RedirectAttributes redirectAttributes) {
 
 		bannerService.update(banner, file, oldImage);
 		redirectAttributes.addFlashAttribute("success", "Cập nhật thành công!");
 		return "redirect:/banners";
 	}
-	
+
 	@GetMapping("/delete")
 	public String delete(@RequestParam("id") Integer id, RedirectAttributes redirectAttributes) {
 		bannerService.delete(id);

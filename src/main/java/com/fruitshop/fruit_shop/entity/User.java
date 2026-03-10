@@ -51,7 +51,18 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Comment> comments;
     
-    public enum Role {
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<PasswordResetCode> passwordResetCodes;
+    
+    public List<PasswordResetCode> getPasswordResetCodes() {
+		return passwordResetCodes;
+	}
+
+	public void setPasswordResetCodes(List<PasswordResetCode> passwordResetCodes) {
+		this.passwordResetCodes = passwordResetCodes;
+	}
+
+	public enum Role {
         user,
         admin
     }

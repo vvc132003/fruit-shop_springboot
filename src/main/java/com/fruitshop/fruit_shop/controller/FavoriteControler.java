@@ -1,5 +1,6 @@
 package com.fruitshop.fruit_shop.controller;
 
+import com.fruitshop.fruit_shop.annotation.AdminOnly;
 import com.fruitshop.fruit_shop.entity.Favorite;
 import com.fruitshop.fruit_shop.service.FavoriteService;
 
@@ -20,6 +21,7 @@ public class FavoriteControler {
 		this.favoriteService = favoriteService;
 	}
 
+	@AdminOnly
 	@GetMapping("")
 	public String list(@RequestParam(name = "page", defaultValue = "1") int page,
 			@RequestParam(name = "keyword", required = false) String keyword, Model model) {

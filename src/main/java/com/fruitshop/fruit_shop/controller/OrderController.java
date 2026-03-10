@@ -1,5 +1,6 @@
 package com.fruitshop.fruit_shop.controller;
 
+import com.fruitshop.fruit_shop.annotation.AdminOnly;
 import com.fruitshop.fruit_shop.entity.Order;
 import com.fruitshop.fruit_shop.service.OrderService;
 
@@ -13,34 +14,34 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/orders")
 public class OrderController {
 
-    private final OrderService orderService;
+	private final OrderService orderService;
 
-    public OrderController(OrderService orderService) {
-        this.orderService = orderService;
-    }
+	public OrderController(OrderService orderService) {
+		this.orderService = orderService;
+	}
 
-    @GetMapping("")
-    public String list(@RequestParam(name = "page", defaultValue = "1") int page,
-                       @RequestParam(name = "keyword", required = false) String keyword,
-                       Model model) {
+	@AdminOnly
+	@GetMapping("")
+	public String list(@RequestParam(name = "page", defaultValue = "1") int page,
+			@RequestParam(name = "keyword", required = false) String keyword, Model model) {
 
-        int pageSize = 10;
+		int pageSize = 10;
 
-        Page<Order> pageData;
+		Page<Order> pageData;
 
-        if (keyword != null && !keyword.isEmpty()) {
-            pageData = orderService.search(keyword, PageRequest.of(page - 1, pageSize));
-        } else {
-            pageData = orderService.getAll(PageRequest.of(page - 1, pageSize));
-        }
+		if (keyword != null && !keyword.isEmpty()) {
+			pageData = orderService.search(keyword, PageRequest.of(page - 1, pageSize));
+		} else {
+			pageData = orderService.getAll(PageRequest.of(page - 1, pageSize));
+		}
 
-        model.addAttribute("orders", pageData.getContent());
-        model.addAttribute("page", page);
-        model.addAttribute("totalPages", pageData.getTotalPages());
-        model.addAttribute("count", pageData.getTotalElements());
-        model.addAttribute("keyword", keyword);
+		model.addAttribute("orders", pageData.getContent());
+		model.addAttribute("page", page);
+		model.addAttribute("totalPages", pageData.getTotalPages());
+		model.addAttribute("count", pageData.getTotalElements());
+		model.addAttribute("keyword", keyword);
 
-        return "admin/orders/list";
-    }
+		return "admin/orders/list";
+	}
 
 }

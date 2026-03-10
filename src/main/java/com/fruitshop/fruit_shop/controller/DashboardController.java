@@ -8,12 +8,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.fruitshop.fruit_shop.annotation.AdminOnly;
 import com.fruitshop.fruit_shop.entity.Product;
 import com.fruitshop.fruit_shop.service.CommentService;
 import com.fruitshop.fruit_shop.service.DashboardService;
 
 import lombok.RequiredArgsConstructor;
 
+@AdminOnly
 @Controller
 @RequestMapping("/dashboard")
 public class DashboardController {

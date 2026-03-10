@@ -1,5 +1,6 @@
 package com.fruitshop.fruit_shop.controller;
 
+import com.fruitshop.fruit_shop.annotation.AdminOnly;
 import com.fruitshop.fruit_shop.entity.Category;
 import com.fruitshop.fruit_shop.service.CategoryService;
 
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+@AdminOnly
 @Controller
 @RequestMapping("/categories")
 public class CategoryController {

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fruitshop.fruit_shop.annotation.AdminOnly;
 import com.fruitshop.fruit_shop.entity.Category;
 import com.fruitshop.fruit_shop.entity.Product;
 import com.fruitshop.fruit_shop.service.CategoryService;
@@ -36,6 +37,7 @@ public class ProductController {
 		this.categoryService = categoryService;
 	}
 
+	@AdminOnly
 	@GetMapping("")
 	public String list(@RequestParam(name = "page", defaultValue = "1") int page,
 			@RequestParam(name = "keyword", required = false) String keyword, Model model) {
@@ -59,6 +61,7 @@ public class ProductController {
 		return "admin/products/list";
 	}
 
+	@AdminOnly
 	@GetMapping("/create")
 	public String create(Model model) {
 
@@ -69,6 +72,7 @@ public class ProductController {
 		return "admin/products/create";
 	}
 
+	@AdminOnly
 	@PostMapping("/save")
 	public String save(@ModelAttribute Product product, @RequestParam("imageFile") MultipartFile file,
 			@RequestParam("categoryId") Integer categoryId, RedirectAttributes redirectAttributes) {
@@ -96,6 +100,7 @@ public class ProductController {
 		return "redirect:/products";
 	}
 
+	@AdminOnly
 	@GetMapping("/update")
 	public String edit(@RequestParam("id") int id, Model model) {
 
@@ -109,6 +114,7 @@ public class ProductController {
 		return "admin/products/update";
 	}
 
+	@AdminOnly
 	@PostMapping("/edit")
 	public String update(@ModelAttribute Product product, @RequestParam("imageFile") MultipartFile file,
 			@RequestParam("categoryId") Integer categoryId, RedirectAttributes redirectAttributes) {
@@ -142,6 +148,7 @@ public class ProductController {
 		return "redirect:/products";
 	}
 
+	@AdminOnly
 	@GetMapping("/delete")
 	public String delete(@RequestParam("id") Integer id, RedirectAttributes redirectAttributes) {
 		productService.delete(id);
