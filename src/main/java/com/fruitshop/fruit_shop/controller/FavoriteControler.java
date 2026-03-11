@@ -2,7 +2,15 @@ package com.fruitshop.fruit_shop.controller;
 
 import com.fruitshop.fruit_shop.annotation.AdminOnly;
 import com.fruitshop.fruit_shop.entity.Favorite;
+import com.fruitshop.fruit_shop.entity.Product;
+import com.fruitshop.fruit_shop.entity.User;
 import com.fruitshop.fruit_shop.service.FavoriteService;
+import com.fruitshop.fruit_shop.service.ProductService;
+
+import jakarta.servlet.http.HttpSession;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,8 +24,10 @@ import org.springframework.web.bind.annotation.*;
 public class FavoriteControler {
 
 	private final FavoriteService favoriteService;
+	private final ProductService productService;
 
-	public FavoriteControler(FavoriteService favoriteService) {
+	public FavoriteControler(FavoriteService favoriteService, ProductService productService) {
+		this.productService = productService;
 		this.favoriteService = favoriteService;
 	}
 
@@ -45,5 +55,49 @@ public class FavoriteControler {
 		model.addAttribute("keyword", keyword);
 
 		return "admin/favorites/list";
+	}
+
+	@GetMapping("/toggle")
+	public String toggleFavorite(@RequestParam("product_id") Integer productId, HttpSession session) {
+
+		User user = (User) session.getAttribute("user");
+
+		if (user == null) {
+			return "redirect:/login";
+		}
+
+		Favorite favorite = favoriteService.findByUserAndProduct(user.getId(), productId);
+
+		if (favorite != null) {
+			favoriteService.delete(favorite); // bỏ thích
+		} else {
+
+			Product product = productService.findById(productId);
+
+			Favorite f = new Favorite();
+			f.setUser(user);
+			f.setProduct(product);
+			f.setCreatedAt(LocalDateTime.now());
+
+			favoriteService.save(f);
+		}
+
+		return "redirect:/shop_detail?id=" + productId;
+	}
+	
+	@GetMapping("/history")
+	public String history(HttpSession session, Model model){
+
+	    User user = (User) session.getAttribute("user");
+
+	    if(user == null){
+	        return "redirect:/login";
+	    }
+
+	    List<Favorite> favorites = favoriteService.findByUser(user.getId());
+
+	    model.addAttribute("favorites", favorites);
+
+	    return "user/favorites/history";
 	}
 }

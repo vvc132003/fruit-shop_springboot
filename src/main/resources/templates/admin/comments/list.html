@@ -98,10 +98,10 @@
 
 										<td class="cell"><a class="btn-sm app-btn-secondary me-1"
 											th:if="${c.status.name() == 'pending'}"
-											th:href="@{/comments/updateStatus(id=${c.id},status='approved',page=${page})}">
+											th:href="@{/comments/updateStatus(id=${c.id}, status='approved')}">
 												Duyệt </a> <a class="btn-sm app-btn-secondary"
 											th:if="${c.status.name() == 'pending'}"
-											th:href="@{/comments/updateStatus(id=${c.id},status='rejected',page=${page})}">
+											th:href="@{/comments/updateStatus(id=${c.id}, status='rejected')}">
 												Từ chối </a></td>
 
 									</tr>

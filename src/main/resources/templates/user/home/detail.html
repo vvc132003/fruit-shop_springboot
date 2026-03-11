@@ -142,7 +142,7 @@
 
 								</button>
 
-								<a th:href="@{/favorite/toggle(product_id=${product.id})}"
+								<a th:href="@{/favorites/toggle(product_id=${product.id})}"
 									class="btn border border-danger rounded-pill px-3 text-secondary">
 
 									<i class="fa fa-heart me-2"></i> Yêu thích
@@ -228,7 +228,7 @@
 						</div>
 
 						<!-- COMMENT FORM -->
-						<form th:action="@{/comment/store}" method="post">
+						<form th:action="@{/comments/store}" method="post">
 
 							<h4 class="mb-5 fw-bold">Bình luận</h4>
 

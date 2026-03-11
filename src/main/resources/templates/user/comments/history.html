@@ -3,7 +3,7 @@
 
 <head>
 <meta charset="UTF-8">
-<title>Đăng nhập</title>
+<title>Lịch bình luận</title>
 <!-- <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css"> -->
 <!-- Google Web Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,84 +40,83 @@
 	</div>
 	<!-- Spinner End -->
 	<div th:replace="~{user/layouts/header :: header}"></div>
-
 	<div class="container-fluid page-header py-5">
-		<h1 class="text-center text-white display-6">Đăng nhập</h1>
+		<h1 class="text-center text-white display-6">Lịch sử bình luận</h1>
 		<ol class="breadcrumb justify-content-center mb-0">
-			<li class="breadcrumb-item"><a href="">Trang chủ</a></li>
-			<li class="breadcrumb-item active text-white">Đăng nhập</li>
+			<li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+			<li class="breadcrumb-item active text-white">Lịch sử bình luận
+			</li>
 		</ol>
 	</div>
-
-	<!-- Login Form -->
 	<div class="container-fluid py-5">
 		<div class="container py-5">
-			<div class="row justify-content-center">
-				<div class="col-md-10 col-lg-6">
 
-					<!-- success -->
-					<div th:if="${session.flash_success}"
-						class="alert alert-success alert-dismissible fade show">
+			<div class="table-responsive">
+				<table class="table align-middle">
+					<thead>
+						<tr>
+							<th>Mã bình luận</th>
+							<th>Sản phẩm</th>
+							<th>Nội dung</th>
+							<th>Trạng thái</th>
+							<th>Ngày bình luận</th>
+							<th>Chi tiết</th>
+						</tr>
+					</thead>
 
-						<span th:text="${session.flash_success}"></span>
+					<tbody>
 
-						<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+						<!-- Nếu không có comment -->
+						<tr th:if="${#lists.isEmpty(comments)}">
+							<td colspan="6" class="text-center py-5"><strong>Bạn
+									chưa có bình luận nào 💬</strong></td>
+						</tr>
 
-					</div>
-					<div th:if="${success}" class="alert alert-success"
-						th:text="${success}"></div>
+						<!-- Loop comment -->
+						<tr th:each="c : ${comments}">
 
-					<h2 class="mb-4 text-center">Đăng nhập tài khoản</h2>
+							<!-- ID -->
+							<td th:text="'#' + ${c.id}"></td>
 
-					<!-- error -->
-					<div th:if="${error}" class="alert alert-danger">
+							<!-- Product -->
+							<td>
+								<div class="d-flex align-items-center">
 
-						<span th:text="${error}"></span>
+									<img th:src="'data:image/jpeg;base64,' + ${c.product.image}"
+										width="60" class="rounded me-3" alt=""> <strong
+										th:text="${c.product.name}"></strong>
 
-					</div>
+								</div>
+							</td>
 
-					<form th:action="@{/auth/login}" method="post">
+							<!-- Content -->
+							<td style="max-width: 400px;" th:text="${c.content}"></td>
 
-						<div class="mb-3">
+							<!-- Status -->
+							<td><span th:if="${c.status.name() == 'pending'}"
+								class="badge bg-warning"> Chờ duyệt </span> <span
+								th:if="${c.status.name() == 'approved'}"
+								class="badge bg-success"> Đã duyệt </span> <span
+								th:if="${c.status.name() == 'rejected'}" class="badge bg-danger">
+									Từ chối </span></td>
 
-							<label class="form-label"> Email </label> <input type="email"
-								name="email" class="form-control" required>
+							<!-- Date -->
+							<td
+								th:text="${#temporals.format(c.createdAt,'dd/MM/yyyy HH:mm')}"></td>
 
-						</div>
-
-						<div class="mb-4">
-
-							<label class="form-label"> Mật khẩu </label> <input
-								type="password" name="password" class="form-control" required>
-
-						</div>
-
-						<button type="submit" class="btn btn-primary w-100 py-3">
-
-							Đăng nhập</button>
-
-						<div class="text-center mt-3">
-
-							<a th:href="@{/auth/forgotPassword}" class="text-decoration-none">
-
-								Quên mật khẩu? </a>
-
-						</div>
-
-						<p class="text-center mt-3">
-
-							Chưa có tài khoản? <a th:href="@{/auth/register}"> Đăng ký </a>
-
-						</p>
-
-					</form>
-
-				</div>
+							<!-- Action -->
+							<td><a th:href="@{/shop_detail(id=${c.product.id})}"
+								class="btn btn-sm btn-outline-primary"> Xem </a> <a
+								th:href="@{/comments/delete(id=${c.id})}"
+								class="btn btn-sm btn-outline-danger"
+								onclick="return confirm('Bạn có chắc muốn xoá bình luận này?')">
+									Xoá </a></td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>
-
-
 	<div th:replace="~{user/layouts/footer :: footer}"></div>
 
 	<!-- Back to Top -->

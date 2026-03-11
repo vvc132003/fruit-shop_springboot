@@ -30,9 +30,11 @@ public class User {
     private String email;
 
     private String address;
-
+    
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String avatar;
-
+    
     @Column(nullable = false)
     private String password;
 

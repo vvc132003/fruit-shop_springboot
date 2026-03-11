@@ -61,7 +61,7 @@
 								<thead>
 									<tr>
 										<th class="cell">ID</th>
-										<th class="cell">Người dùng</th>
+										<th class="cell">Khách hàng</th>
 										<th class="cell">Sản phẩm</th>
 										<th class="cell">Giá</th>
 										<th class="cell">Ngày yêu thích</th>
@@ -81,10 +81,10 @@
 										<td class="cell">
 											<div class="d-flex align-items-center">
 
-												<img th:src="@{'/' + ${f.product.image}}" width="45"
-													class="rounded me-2"> <a
+												<img th:src="'data:image/jpeg;base64,' + ${f.product.image}"
+													width="45" class="rounded me-2"> <a
 													th:href="@{/shop_detail(id=${f.product.id})}"
-													target="_blank" th:text="${f.product.name}"> </a>
+													target="_blank" th:text="${f.product.name}"> </a> </a>
 
 											</div>
 										</td>

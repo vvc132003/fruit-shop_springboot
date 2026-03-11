@@ -3,7 +3,7 @@
 
 <head>
 <meta charset="UTF-8">
-<title>Đăng nhập</title>
+<title>Đặt hàng</title>
 <!-- <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css"> -->
 <!-- Google Web Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,84 +40,27 @@
 	</div>
 	<!-- Spinner End -->
 	<div th:replace="~{user/layouts/header :: header}"></div>
-
-	<div class="container-fluid page-header py-5">
-		<h1 class="text-center text-white display-6">Đăng nhập</h1>
-		<ol class="breadcrumb justify-content-center mb-0">
-			<li class="breadcrumb-item"><a href="">Trang chủ</a></li>
-			<li class="breadcrumb-item active text-white">Đăng nhập</li>
-		</ol>
-	</div>
-
-	<!-- Login Form -->
-	<div class="container-fluid py-5">
-		<div class="container py-5">
-			<div class="row justify-content-center">
-				<div class="col-md-10 col-lg-6">
-
-					<!-- success -->
-					<div th:if="${session.flash_success}"
-						class="alert alert-success alert-dismissible fade show">
-
-						<span th:text="${session.flash_success}"></span>
-
-						<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-
-					</div>
-					<div th:if="${success}" class="alert alert-success"
-						th:text="${success}"></div>
-
-					<h2 class="mb-4 text-center">Đăng nhập tài khoản</h2>
-
-					<!-- error -->
-					<div th:if="${error}" class="alert alert-danger">
-
-						<span th:text="${error}"></span>
-
-					</div>
-
-					<form th:action="@{/auth/login}" method="post">
-
-						<div class="mb-3">
-
-							<label class="form-label"> Email </label> <input type="email"
-								name="email" class="form-control" required>
-
-						</div>
-
-						<div class="mb-4">
-
-							<label class="form-label"> Mật khẩu </label> <input
-								type="password" name="password" class="form-control" required>
-
-						</div>
-
-						<button type="submit" class="btn btn-primary w-100 py-3">
-
-							Đăng nhập</button>
-
-						<div class="text-center mt-3">
-
-							<a th:href="@{/auth/forgotPassword}" class="text-decoration-none">
-
-								Quên mật khẩu? </a>
-
-						</div>
-
-						<p class="text-center mt-3">
-
-							Chưa có tài khoản? <a th:href="@{/auth/register}"> Đăng ký </a>
-
-						</p>
-
-					</form>
-
-				</div>
-			</div>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<div class="container py-5 text-center">
+		<div class="alert alert-success">
+			<h3 class="mb-3">🎉 Đặt hàng thành công!</h3>
+			<p>Cảm ơn bạn đã mua hàng.</p>
+			<p class="mb-0">Chúng tôi sẽ liên hệ và giao hàng trong thời gian
+				sớm nhất.</p>
 		</div>
+
+		<div class="mt-4">
+			<a href="/" class="btn btn-primary me-2">
+				🏠 Trang chủ </a> <a href="/orders/history"
+				class="btn btn-outline-secondary"> 📦 Xem đơn hàng </a>
+		</div>
+
 	</div>
-
-
 	<div th:replace="~{user/layouts/footer :: footer}"></div>
 
 	<!-- Back to Top -->

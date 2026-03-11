@@ -3,7 +3,7 @@
 
 <head>
 <meta charset="UTF-8">
-<title>Đăng nhập</title>
+<title>Lịch sử yêu thích</title>
 <!-- <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css"> -->
 <!-- Google Web Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,84 +40,84 @@
 	</div>
 	<!-- Spinner End -->
 	<div th:replace="~{user/layouts/header :: header}"></div>
-
 	<div class="container-fluid page-header py-5">
-		<h1 class="text-center text-white display-6">Đăng nhập</h1>
+		<h1 class="text-center text-white display-6">Lịch sử yêu thích</h1>
 		<ol class="breadcrumb justify-content-center mb-0">
 			<li class="breadcrumb-item"><a href="">Trang chủ</a></li>
-			<li class="breadcrumb-item active text-white">Đăng nhập</li>
+			<li class="breadcrumb-item active text-white">Lịch sử yêu thích
+			</li>
 		</ol>
 	</div>
-
-	<!-- Login Form -->
 	<div class="container-fluid py-5">
 		<div class="container py-5">
-			<div class="row justify-content-center">
-				<div class="col-md-10 col-lg-6">
 
-					<!-- success -->
-					<div th:if="${session.flash_success}"
-						class="alert alert-success alert-dismissible fade show">
+			<div class="table-responsive">
+				<table class="table align-middle">
+					<thead>
+						<tr>
+							<th>Mã yêu thích</th>
+							<th>Sản phẩm</th>
+							<th>Giá</th>
+							<th>Ngày yêu thích</th>
+							<th>Chi tiết</th>
+							<th>Xoá</th>
+						</tr>
+					</thead>
 
-						<span th:text="${session.flash_success}"></span>
+					<tbody>
 
-						<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+						<!-- Nếu không có favorite -->
+						<tr th:if="${#lists.isEmpty(favorites)}">
+							<td colspan="6" class="text-center py-5"><strong>Bạn
+									chưa yêu thích sản phẩm nào ❤️</strong></td>
+						</tr>
 
-					</div>
-					<div th:if="${success}" class="alert alert-success"
-						th:text="${success}"></div>
+						<!-- Loop favorites -->
+						<tr th:each="f : ${favorites}">
 
-					<h2 class="mb-4 text-center">Đăng nhập tài khoản</h2>
+							<!-- ID -->
+							<td th:text="'#' + ${f.id}"></td>
 
-					<!-- error -->
-					<div th:if="${error}" class="alert alert-danger">
+							<!-- Product -->
+							<td>
+								<div class="d-flex align-items-center">
 
-						<span th:text="${error}"></span>
+									<img th:src="'data:image/jpeg;base64,' + ${f.product.image}"
+										width="60" class="rounded me-3" alt=""> <strong
+										th:text="${f.product.name}"></strong>
 
-					</div>
+								</div>
+							</td>
 
-					<form th:action="@{/auth/login}" method="post">
+							<!-- Price -->
+							<td class="text-danger fw-bold"><span
+								th:text="${#numbers.formatDecimal(f.product.price,0,'COMMA',0,'POINT')}"></span>
+								đ <small class="text-muted">/ <span
+									th:text="${f.product.unit}"></span></small></td>
 
-						<div class="mb-3">
+							<!-- Date -->
+							<td
+								th:text="${#temporals.format(f.createdAt,'dd/MM/yyyy HH:mm')}"></td>
 
-							<label class="form-label"> Email </label> <input type="email"
-								name="email" class="form-control" required>
+							<!-- Detail -->
+							<td><a th:href="@{/shop_detail(id=${f.product.id})}"
+								class="btn btn-sm btn-outline-primary"> Xem </a></td>
 
-						</div>
+							<!-- Remove -->
+							<td><a
+								th:href="@{/favorites/toggle(product_id=${f.product.id})}"
+								class="btn btn-sm btn-outline-danger"
+								onclick="return confirm('Bỏ sản phẩm này khỏi yêu thích?')">
+									Xoá </a></td>
 
-						<div class="mb-4">
+						</tr>
 
-							<label class="form-label"> Mật khẩu </label> <input
-								type="password" name="password" class="form-control" required>
-
-						</div>
-
-						<button type="submit" class="btn btn-primary w-100 py-3">
-
-							Đăng nhập</button>
-
-						<div class="text-center mt-3">
-
-							<a th:href="@{/auth/forgotPassword}" class="text-decoration-none">
-
-								Quên mật khẩu? </a>
-
-						</div>
-
-						<p class="text-center mt-3">
-
-							Chưa có tài khoản? <a th:href="@{/auth/register}"> Đăng ký </a>
-
-						</p>
-
-					</form>
-
-				</div>
+					</tbody>
+				</table>
 			</div>
+
 		</div>
 	</div>
-
-
 	<div th:replace="~{user/layouts/footer :: footer}"></div>
 
 	<!-- Back to Top -->

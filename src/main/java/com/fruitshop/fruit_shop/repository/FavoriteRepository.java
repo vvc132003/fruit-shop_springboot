@@ -1,6 +1,9 @@
 package com.fruitshop.fruit_shop.repository;
 
 import com.fruitshop.fruit_shop.entity.Favorite;
+
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,5 +18,9 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Integer> {
     """)
     Page<Favorite> search(String keyword, Pageable pageable);
     long countByProductId(Integer productId);
+    
+    Favorite findByUserIdAndProductId(Integer userId, Integer productId);
+    List<Favorite> findByUserIdOrderByCreatedAtDesc(Integer userId);
+
 
 }

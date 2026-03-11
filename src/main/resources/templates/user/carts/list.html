@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Giỏ hàng</title>
+<!-- <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css"> -->
+<!-- Google Web Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap"
+	rel="stylesheet">
+
+<!-- Icon Font Stylesheet -->
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+	rel="stylesheet">
+
+<!-- Libraries Stylesheet -->
+<link href="/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+<link href="/lib/owlcarousel/assets/owl.carousel.min.css"
+	rel="stylesheet">
+<link rel="shortcut icon" href="/assets/images/app-logo.svg">
+
+
+<!-- Customized Bootstrap Stylesheet -->
+<link href="/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Template Stylesheet -->
+<link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+	<!-- Spinner Start -->
+	<div id="spinner"
+		class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+		<div class="spinner-grow text-primary" role="status"></div>
+	</div>
+	<!-- Spinner End -->
+	<div th:replace="~{user/layouts/header :: header}"></div>
+	<div class="container-fluid page-header py-5">
+		<h1 class="text-center text-white display-6">Giỏ hàng</h1>
+		<ol class="breadcrumb justify-content-center mb-0">
+			<li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+			<li class="breadcrumb-item"><a href="#">Trang</a></li>
+			<li class="breadcrumb-item active text-white">Giỏ hàng</li>
+		</ol>
+	</div>
+	<div class="container-fluid py-5">
+		<div class="container py-5">
+			<div class="table-responsive">
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">Ảnh</th>
+							<th scope="col">Tên</th>
+							<th scope="col">Gía bán</th>
+							<th scope="col">Số lượng</th>
+							<th scope="col">Thành tiền</th>
+							<th scope="col">Hành động</th>
+						</tr>
+					</thead>
+
+					<tbody>
+
+						<!-- nếu có sản phẩm -->
+						<tr th:each="item : ${items}">
+
+							<th scope="row">
+								<div class="d-flex align-items-center">
+									<img th:src="'data:image/jpeg;base64,' + ${item.product.image}"
+										class="img-fluid me-5 rounded-circle"
+										style="width: 80px; height: 80px;"
+										th:alt="${item.product.name}">
+								</div>
+							</th>
+
+							<td>
+								<p class="mb-0 mt-4" th:text="${item.product.name}"></p>
+							</td>
+
+							<td>
+								<p class="mb-0 mt-4"
+									th:text="${#numbers.formatDecimal(item.price,0,'COMMA',0,'POINT')} + ' đ'">
+								</p>
+							</td>
+
+							<td>
+
+								<div class="input-group cart-quantity mt-4" style="width: 120px;">
+
+									<button
+										class="btn btn-sm btn-minus rounded-circle bg-light border btn-decrease"
+										th:attr="data-id=${item.id}">
+										<i class="fa fa-minus"></i>
+									</button>
+
+									<input type="text"
+										class="form-control form-control-sm text-center border-0 quantity-input"
+										th:value="${item.quantity}" th:attr="data-id=${item.id}"
+										readonly>
+
+									<button
+										class="btn btn-sm btn-plus rounded-circle bg-light border btn-increase"
+										th:attr="data-id=${item.id}">
+										<i class="fa fa-plus"></i>
+									</button>
+
+								</div>
+
+							</td>
+
+							<td>
+								<p class="mb-0 mt-4 item-total"
+									th:attr="data-id=${item.id},data-price=${item.price}"
+									th:text="${#numbers.formatDecimal(item.price * item.quantity,0,'COMMA',0,'POINT')} + ' đ'">
+								</p>
+							</td>
+
+							<td>
+								<button
+									class="btn btn-md rounded-circle bg-light border mt-4 btn-remove-cart"
+									th:attr="data-id=${item.id}">
+									<i class="fa fa-times text-danger"></i>
+								</button>
+							</td>
+
+						</tr>
+
+						<!-- nếu giỏ hàng trống -->
+						<tr th:if="${#lists.isEmpty(items)}">
+							<td colspan="6" class="text-center py-5"><strong>Giỏ
+									hàng trống 🛒</strong></td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+
+
+			<div class="row g-4 justify-content-end">
+
+				<div class="col-8"></div>
+
+				<div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
+
+					<div class="bg-light rounded shadow-sm">
+
+						<div class="p-4">
+							<h4 class="fw-bold mb-4 text-primary">🛒 Giỏ hàng</h4>
+
+							<div class="d-flex justify-content-between align-items-center">
+
+								<span class="text-muted"> Tổng sản phẩm </span> <span
+									class="fw-bold" id="total-quantity" th:text="${totalQuantity}">
+								</span>
+
+							</div>
+						</div>
+
+						<div
+							class="py-4 px-4 border-top border-bottom d-flex justify-content-between align-items-center">
+
+							<span class="fw-bold fs-5"> Tổng tiền </span> <span
+								class="fw-bold fs-4 text-danger" id="total-price"
+								th:text="${#numbers.formatDecimal(totalPrice,0,'COMMA',0,'POINT')} + ' đ'">
+							</span>
+
+						</div>
+
+						<br>
+
+						<div class="px-4">
+
+							<a th:if="${!#lists.isEmpty(items)}" th:href="@{/cart/checkout}"
+								class="btn border-secondary w-100 rounded-pill px-4 py-3 text-primary text-uppercase mb-4">
+
+								Tiến hành đặt hàng </a>
+
+							<button th:if="${#lists.isEmpty(items)}"
+								class="btn border-secondary rounded-pill px-4 py-3 text-muted text-uppercase mb-4 ms-4"
+								disabled>Tiến hành đặt hàng</button>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div th:replace="~{user/layouts/footer :: footer}"></div>
+
+	<!-- Back to Top -->
+	<a href="#"
+		class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
+		class="fa fa-arrow-up"></i></a>
+
+
+	<!-- JavaScript Libraries -->
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="/lib/easing/easing.min.js"></script>
+	<script src="/lib/waypoints/waypoints.min.js"></script>
+	<script src="/lib/lightbox/js/lightbox.min.js"></script>
+	<script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+
+	<!-- Template Javascript -->
+	<script src="/js/main.js"></script>
+	<script>
+
+function formatMoney(number){
+    return number.toLocaleString('vi-VN') + " đ";
+}
+
+function recalcCart(){
+
+    let totalQty = 0;
+    let totalPrice = 0;
+
+    document.querySelectorAll("tbody tr").forEach(row=>{
+
+        const qtyInput = row.querySelector(".quantity-input");
+        const totalCell = row.querySelector(".item-total");
+
+        if(!qtyInput || !totalCell) return;
+
+        const qty = parseInt(qtyInput.value);
+        const price = parseFloat(totalCell.dataset.price);
+
+        const itemTotal = qty * price;
+
+        totalQty += qty;
+        totalPrice += itemTotal;
+
+        totalCell.innerText = formatMoney(itemTotal);
+
+    });
+
+    document.getElementById("total-quantity").innerText = totalQty;
+    document.getElementById("total-price").innerText = formatMoney(totalPrice);
+
+    // ⭐ cập nhật icon cart
+    const cartCount = document.getElementById("cart-count");
+
+    if(cartCount){
+        if(totalQty > 0){
+            cartCount.innerText = totalQty;
+            cartCount.style.display = "flex";
+        }else{
+            cartCount.style.display = "none";
+        }
+    }
+}
+
+document.addEventListener("click",function(e){
+
+    const increase = e.target.closest(".btn-increase");
+    const decrease = e.target.closest(".btn-decrease");
+    const remove = e.target.closest(".btn-remove-cart");
+
+    if(increase){
+
+        const id = increase.dataset.id;
+
+        fetch("/api/cart/increase?id="+id,{
+            method:"POST"
+        })
+        .then(res=>res.json())
+        .then(data=>{
+
+            if(data.status==="success"){
+
+                const input = document.querySelector(".quantity-input[data-id='"+id+"']");
+                input.value = parseInt(input.value)+1;
+
+                recalcCart();
+
+            }
+
+        });
+
+    }
+
+    if(decrease){
+
+        const id = decrease.dataset.id;
+
+        fetch("/api/cart/decrease?id="+id,{
+            method:"POST"
+        })
+        .then(res=>res.json())
+        .then(data=>{
+
+            if(data.status==="success"){
+
+                const input = document.querySelector(".quantity-input[data-id='"+id+"']");
+                const row = decrease.closest("tr");
+
+                if(parseInt(input.value)>1){
+                    input.value = parseInt(input.value)-1;
+                }else{
+                    row.remove();
+                }
+
+                recalcCart();
+
+            }
+
+        });
+
+    }
+
+    if(remove){
+
+        const id = remove.dataset.id;
+        const row = remove.closest("tr");
+
+        if(!confirm("Bạn muốn xoá sản phẩm này?")) return;
+
+        fetch("/api/cart/remove?id="+id,{
+            method:"POST"
+        })
+        .then(res=>res.json())
+        .then(data=>{
+
+            if(data.status==="success"){
+
+                row.remove();
+
+                recalcCart();
+
+            }
+
+        });
+
+    }
+
+});
+
+</script>
+
+</body>
+
+</html>

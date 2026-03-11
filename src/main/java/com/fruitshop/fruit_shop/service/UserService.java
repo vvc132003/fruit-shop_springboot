@@ -1,10 +1,12 @@
 package com.fruitshop.fruit_shop.service;
 
+import java.util.Base64;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fruitshop.fruit_shop.entity.User;
 import com.fruitshop.fruit_shop.repository.OrderRepository;
@@ -44,5 +46,63 @@ public class UserService {
 
 	public Optional<User> findByEmail(String email) {
 		return userRepository.findByEmail(email);
+	}
+
+	public User findById(Integer id) {
+		return userRepository.findById(id).orElse(null);
+	}
+
+	public void updateProfile(Integer id, String firstName, String lastName, String email, String phone, String address,
+			MultipartFile avatar) throws Exception {
+
+		User user = userRepository.findById(id).orElse(null);
+
+		if (user == null)
+			return;
+
+		user.setFirstName(firstName);
+		user.setLastName(lastName);
+		user.setEmail(email);
+		user.setPhone(phone);
+		user.setAddress(address);
+
+		// nếu có upload ảnh
+		if (avatar != null && !avatar.isEmpty()) {
+
+			byte[] bytes = avatar.getBytes();
+
+			String base64 = Base64.getEncoder().encodeToString(bytes);
+
+			user.setAvatar(base64);
+		}
+
+		userRepository.save(user);
+	}
+
+	public void changePassword(Integer userId, String currentPassword, String newPassword, String confirmPassword) {
+
+		if (currentPassword.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty()) {
+			throw new RuntimeException("Vui lòng nhập đầy đủ thông tin");
+		}
+
+		if (!newPassword.equals(confirmPassword)) {
+			throw new RuntimeException("Mật khẩu mới không khớp");
+		}
+
+		User user = userRepository.findById(userId).orElse(null);
+
+		if (user == null) {
+			throw new RuntimeException("User không tồn tại");
+		}
+
+		// kiểm tra password hiện tại
+		if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+			throw new RuntimeException("Mật khẩu hiện tại không đúng");
+		}
+
+		// update password
+		user.setPassword(passwordEncoder.encode(newPassword));
+
+		userRepository.save(user);
 	}
 }

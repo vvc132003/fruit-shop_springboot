@@ -3,7 +3,7 @@
 
 <head>
 <meta charset="UTF-8">
-<title>Đăng nhập</title>
+<title>Đăng ký</title>
 <!-- <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css"> -->
 <!-- Google Web Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,72 +42,67 @@
 	<div th:replace="~{user/layouts/header :: header}"></div>
 
 	<div class="container-fluid page-header py-5">
-		<h1 class="text-center text-white display-6">Đăng nhập</h1>
+		<h1 class="text-center text-white display-6">Đăng ký tài khoản</h1>
 		<ol class="breadcrumb justify-content-center mb-0">
-			<li class="breadcrumb-item"><a href="">Trang chủ</a></li>
-			<li class="breadcrumb-item active text-white">Đăng nhập</li>
+			<li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+			<li class="breadcrumb-item active text-white">Đăng ký</li>
 		</ol>
 	</div>
 
-	<!-- Login Form -->
+
 	<div class="container-fluid py-5">
 		<div class="container py-5">
 			<div class="row justify-content-center">
 				<div class="col-md-10 col-lg-6">
 
-					<!-- success -->
-					<div th:if="${session.flash_success}"
-						class="alert alert-success alert-dismissible fade show">
+					<h2 class="mb-4 text-center">Tạo tài khoản mới</h2>
+					<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+					<form th:action="@{/auth/register}" th:object="${user}"
+						method="post">
 
-						<span th:text="${session.flash_success}"></span>
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<label class="form-label">Họ</label> <input type="text"
+									th:field="*{firstName}" class="form-control" required>
+							</div>
 
-						<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-
-					</div>
-					<div th:if="${success}" class="alert alert-success"
-						th:text="${success}"></div>
-
-					<h2 class="mb-4 text-center">Đăng nhập tài khoản</h2>
-
-					<!-- error -->
-					<div th:if="${error}" class="alert alert-danger">
-
-						<span th:text="${error}"></span>
-
-					</div>
-
-					<form th:action="@{/auth/login}" method="post">
+							<div class="col-md-6 mb-3">
+								<label class="form-label">Tên</label> <input type="text"
+									th:field="*{lastName}" class="form-control" required>
+							</div>
+						</div>
 
 						<div class="mb-3">
+							<label class="form-label">Số điện thoại</label> <input
+								type="text" th:field="*{phone}" class="form-control" required>
+						</div>
 
-							<label class="form-label"> Email </label> <input type="email"
-								name="email" class="form-control" required>
+						<div class="mb-3">
+							<label class="form-label">Email</label> <input type="email"
+								th:field="*{email}" class="form-control" required>
+						</div>
 
+						<div class="mb-3">
+							<label class="form-label">Địa chỉ</label> <input type="text"
+								th:field="*{address}" class="form-control">
+						</div>
+
+						<div class="mb-3">
+							<label class="form-label">Mật khẩu</label> <input type="password"
+								name="password" class="form-control" required>
 						</div>
 
 						<div class="mb-4">
-
-							<label class="form-label"> Mật khẩu </label> <input
-								type="password" name="password" class="form-control" required>
-
+							<label class="form-label">Nhập lại mật khẩu</label> <input
+								type="password" name="confirmPassword" class="form-control"
+								required>
 						</div>
 
 						<button type="submit" class="btn btn-primary w-100 py-3">
-
-							Đăng nhập</button>
-
-						<div class="text-center mt-3">
-
-							<a th:href="@{/auth/forgotPassword}" class="text-decoration-none">
-
-								Quên mật khẩu? </a>
-
-						</div>
+							Đăng ký</button>
 
 						<p class="text-center mt-3">
-
-							Chưa có tài khoản? <a th:href="@{/auth/register}"> Đăng ký </a>
-
+							Đã có tài khoản? <a th:href="@{/login}">Đăng nhập</a>
 						</p>
 
 					</form>
@@ -116,7 +111,6 @@
 			</div>
 		</div>
 	</div>
-
 
 	<div th:replace="~{user/layouts/footer :: footer}"></div>
 

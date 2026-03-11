@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Cập nhật tài khoản</title>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="description"
+	content="Portal - Bootstrap 5 Admin Dashboard Template For Developers">
+<meta name="author" content="Xiaoying Riley at 3rd Wave Media">
+<link rel="stylesheet" href="/assets/css/portal.css" media="all">
+<link rel="shortcut icon" href="/assets/images/app-logo.svg">
+
+
+</head>
+
+<body class="app">
+
+	<header th:replace="~{/admin/layouts/header :: header}"></header>
+	<div class="app-wrapper">
+		<div class="app-content pt-3 p-md-3 p-lg-4">
+			<div class="container-xl">
+
+				<!-- HEADER -->
+				<div class="row g-3 mb-4 align-items-center justify-content-between">
+					<div class="col-auto">
+						<h1 class="app-page-title mb-0">Cập nhật tài khoản</h1>
+					</div>
+					<div class="col-auto">
+						<a th:href="@{/dashboard}" class="btn app-btn-secondary">
+							<i class="fa fa-arrow-left"></i> Quay lại
+						</a>
+					</div>
+				</div>
+
+				<!-- ERROR -->
+				<div th:if="${error}" class="alert alert-danger" th:text="${error}">
+				</div>
+
+				<!-- SUCCESS -->
+				<div th:if="${success}" class="alert alert-success"
+					th:text="${success}"></div>
+
+				<!-- FORM -->
+				<div class="app-card app-card-settings shadow-sm p-4">
+					<div class="app-card-body">
+
+						<form th:action="@{/auth/update}" method="post"
+							enctype="multipart/form-data" class="settings-form">
+
+							<input type="hidden" name="id" th:value="${user.id}">
+
+							<div class="row">
+
+								<div class="col-6">
+
+									<div class="mb-3">
+										<label class="form-label">Họ</label> <input type="text"
+											name="firstName" class="form-control"
+											th:value="${user.firstName}" required>
+									</div>
+
+									<div class="mb-3">
+										<label class="form-label">Tên</label> <input type="text"
+											name="lastName" class="form-control"
+											th:value="${user.lastName}" required>
+									</div>
+
+									<div class="mb-3">
+										<label class="form-label">Email</label> <input type="email"
+											name="email" class="form-control" th:value="${user.email}">
+									</div>
+
+								</div>
+
+								<div class="col-6">
+
+									<div class="mb-3">
+										<label class="form-label">Số điện thoại</label> <input
+											type="text" name="phone" class="form-control"
+											th:value="${user.phone}" required>
+									</div>
+
+									<div class="mb-3">
+										<label class="form-label">Địa chỉ</label> <input type="text"
+											name="address" class="form-control"
+											th:value="${user.address}">
+									</div>
+
+									<div class="mb-3">
+										<label class="form-label">Trạng thái</label> <select
+											name="status" class="form-control">
+
+											<option value="active"
+												th:selected="${user.status == 'active'}">Hoạt động
+											</option>
+
+											<option value="inactive"
+												th:selected="${user.status == 'inactive'}">Khoá</option>
+
+										</select>
+
+									</div>
+
+								</div>
+
+							</div>
+
+							<!-- Avatar -->
+							<div class="mb-3">
+								<label class="form-label">Ảnh đại diện</label>
+
+								<div class="d-flex align-items-center mb-2">
+
+									<img
+										th:src="${user.avatar != null} ?
+                                             'data:image/jpeg;base64,' + ${user.avatar} :
+                                             @{/img/avatar-default.png}"
+										class="rounded-circle me-3"
+										style="width: 80px; height: 80px; object-fit: cover;"
+										alt="Avatar">
+
+								</div>
+
+								<input type="file" name="avatar" class="form-control"
+									accept="image/*">
+							</div>
+
+							<div class="form-actions d-flex justify-content-end">
+								<button type="submit" class="btn app-btn-primary">Cập
+									nhật</button>
+							</div>
+
+						</form>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<script src="/assets/js/all.min.js"></script>
+	<script src="/assets/plugins/popper.min.js"></script>
+	<script src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="/assets/plugins/chart.js/chart.min.js"></script>
+	<script src="/assets/js/index-charts.js"></script>
+	<script src="/assets/js/app.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+
+</html>

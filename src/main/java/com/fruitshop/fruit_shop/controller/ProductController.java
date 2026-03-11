@@ -25,6 +25,7 @@ import com.fruitshop.fruit_shop.entity.Product;
 import com.fruitshop.fruit_shop.service.CategoryService;
 import com.fruitshop.fruit_shop.service.ProductService;
 
+@AdminOnly
 @Controller
 @RequestMapping("/products")
 public class ProductController {

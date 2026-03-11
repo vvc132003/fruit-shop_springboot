@@ -50,27 +50,25 @@
 
 						<div class="app-utility-item app-user-dropdown dropdown">
 							<a class="dropdown-toggle" id="user-dropdown-toggle"
-								data-bs-toggle="dropdown" href="#" role="button"> <img
+								data-bs-toggle="dropdown" href="#" role="button"><img
 								th:src="${session.user != null && session.user.avatar != null} 
-? @{${session.user.avatar}} 
+? 'data:image/jpeg;base64,' + ${session.user.avatar} 
 : @{/assets/images/user.png}"
-								alt="user profile" class="rounded-circle">
-
-							</a>
+								alt="user profile" class="rounded-circle"> </a>
 							<ul class="dropdown-menu">
 
-								<li><a class="dropdown-item" th:href="@{/admin/account}">
+								<li><a class="dropdown-item" th:href="@{/auth/edit}">
 										Tài khoản </a></li>
 
-								<li><a class="dropdown-item" th:href="@{/admin/password}">
+								<li><a class="dropdown-item" th:href="@{/auth/password}">
 										Đổi mật khẩu </a></li>
 
 								<li>
 									<hr class="dropdown-divider">
 								</li>
 
-								<li><a class="dropdown-item" th:href="@{/logout}"> Đăng
-										xuất </a></li>
+								<li><a class="dropdown-item" th:href="@{/auth/logout}">
+										Đăng xuất </a></li>
 
 							</ul>
 						</div>

@@ -39,4 +39,13 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 	// Tổng số đơn theo ngày
 	@Query("SELECT COUNT(o) FROM Order o WHERE DATE(o.createdAt) = :date")
 	Long countByDate(@Param("date") LocalDate date);
+
+	Page<Order> findByUserId(Integer userId, Pageable pageable);
+
+	@Query("""
+			SELECT o FROM Order o 
+			WHERE o.user.id = :userId 
+			AND CAST(o.id AS string) LIKE %:keyword%
+			""")
+			Page<Order> searchByUser(Integer userId, String keyword, Pageable pageable);
 }

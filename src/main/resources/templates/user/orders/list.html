@@ -3,7 +3,7 @@
 
 <head>
 <meta charset="UTF-8">
-<title>Đăng nhập</title>
+<title>Lịch sử đơn hàng</title>
 <!-- <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css"> -->
 <!-- Google Web Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,84 +40,74 @@
 	</div>
 	<!-- Spinner End -->
 	<div th:replace="~{user/layouts/header :: header}"></div>
-
 	<div class="container-fluid page-header py-5">
-		<h1 class="text-center text-white display-6">Đăng nhập</h1>
+		<h1 class="text-center text-white display-6">Lịch sử mua hàng</h1>
 		<ol class="breadcrumb justify-content-center mb-0">
-			<li class="breadcrumb-item"><a href="">Trang chủ</a></li>
-			<li class="breadcrumb-item active text-white">Đăng nhập</li>
+			<li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+			<li class="breadcrumb-item active text-white">Lịch sử mua hàng</li>
 		</ol>
 	</div>
-
-	<!-- Login Form -->
 	<div class="container-fluid py-5">
 		<div class="container py-5">
-			<div class="row justify-content-center">
-				<div class="col-md-10 col-lg-6">
+			<div class="table-responsive">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Mã đơn</th>
+							<th>Ngày đặt</th>
+							<th>Người nhận</th>
+							<th>Trạng thái</th>
+							<th>Tổng tiền</th>
+							<th>Chi tiết</th>
+						</tr>
+					</thead>
 
-					<!-- success -->
-					<div th:if="${session.flash_success}"
-						class="alert alert-success alert-dismissible fade show">
+					<tbody>
 
-						<span th:text="${session.flash_success}"></span>
+						<!-- nếu có đơn -->
+						<tr th:each="o : ${orders}">
+							<td>#<span th:text="${o.id}"></span></td>
 
-						<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+							<td
+								th:text="${#temporals.format(o.createdAt,'dd/MM/yyyy HH:mm')}"></td>
 
-					</div>
-					<div th:if="${success}" class="alert alert-success"
-						th:text="${success}"></div>
+							<td><span th:text="${o.receiverName}"></span><br> <small
+								class="text-muted" th:text="${o.receiverPhone}"></small></td>
 
-					<h2 class="mb-4 text-center">Đăng nhập tài khoản</h2>
+							<!-- STATUS -->
+							<td><span class="badge bg-warning"
+								th:if="${o.status.name() == 'pending'}"> Chờ xử lý </span> <span
+								class="badge bg-info" th:if="${o.status.name() == 'shipping'}">
+									Đang giao </span> <span class="badge bg-success"
+								th:if="${o.status.name() == 'completed'}"> Hoàn thành </span> <span
+								class="badge bg-danger"
+								th:if="${o.status.name() == 'cancelled'}"> Đã huỷ </span> <span
+								class="badge bg-primary" th:if="${o.status.name() == 'paid'}">
+									Đã thanh toán </span></td>
 
-					<!-- error -->
-					<div th:if="${error}" class="alert alert-danger">
 
-						<span th:text="${error}"></span>
+							<!-- TOTAL -->
+							<td class="text-danger fw-bold"
+								th:text="${#numbers.formatDecimal(o.total,0,'COMMA',0,'POINT')} + ' đ'">
+							</td>
 
-					</div>
+							<!-- DETAIL -->
+							<td><a th:href="@{/orders/show(id=${o.id})}"
+								class="btn btn-sm btn-outline-primary"> Xem </a></td>
+						</tr>
 
-					<form th:action="@{/auth/login}" method="post">
+						<!-- nếu không có đơn -->
+						<tr th:if="${#lists.isEmpty(orders)}">
+							<td colspan="7" class="text-center py-5"><strong>Bạn
+									chưa có đơn hàng nào 📦</strong></td>
+						</tr>
 
-						<div class="mb-3">
+					</tbody>
 
-							<label class="form-label"> Email </label> <input type="email"
-								name="email" class="form-control" required>
-
-						</div>
-
-						<div class="mb-4">
-
-							<label class="form-label"> Mật khẩu </label> <input
-								type="password" name="password" class="form-control" required>
-
-						</div>
-
-						<button type="submit" class="btn btn-primary w-100 py-3">
-
-							Đăng nhập</button>
-
-						<div class="text-center mt-3">
-
-							<a th:href="@{/auth/forgotPassword}" class="text-decoration-none">
-
-								Quên mật khẩu? </a>
-
-						</div>
-
-						<p class="text-center mt-3">
-
-							Chưa có tài khoản? <a th:href="@{/auth/register}"> Đăng ký </a>
-
-						</p>
-
-					</form>
-
-				</div>
+				</table>
 			</div>
 		</div>
 	</div>
-
-
 	<div th:replace="~{user/layouts/footer :: footer}"></div>
 
 	<!-- Back to Top -->
