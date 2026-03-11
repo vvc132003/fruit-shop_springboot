@@ -11,4 +11,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
     Page<Category> findByNameContainingIgnoreCase(String keyword, Pageable pageable);
     List<Category> findTop4ByOrderByIdDesc();
+    
+    
 }
