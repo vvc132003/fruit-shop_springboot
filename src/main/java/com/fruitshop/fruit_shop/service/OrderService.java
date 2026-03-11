@@ -84,6 +84,34 @@ public class OrderService {
 		orderRepository.save(order);
 	}
 
+	public boolean nextStatus(Integer id) {
+
+		Order order = orderRepository.findById(id).orElse(null);
+
+		if (order == null) {
+			return false;
+		}
+
+		Order.OrderStatus current = order.getStatus();
+
+		switch (current) {
+
+		case pending:
+			order.setStatus(Order.OrderStatus.shipping);
+			break;
+
+		case shipping:
+			order.setStatus(Order.OrderStatus.completed);
+			break;
+
+		default:
+			return false; // completed hoặc cancelled thì không đổi
+		}
+
+		orderRepository.save(order);
+		return true;
+	}
+
 	@Transactional
 	public void placeOrder(User user, String shippingAddress) {
 

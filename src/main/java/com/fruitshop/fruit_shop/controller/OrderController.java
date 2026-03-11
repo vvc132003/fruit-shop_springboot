@@ -115,6 +115,27 @@ public class OrderController {
 		return "user/orders/show";
 	}
 
+	@GetMapping("/orderdetail")
+	public String showOrder_s(@RequestParam("id") Integer id, Model model) {
+
+		Order order = orderService.findById(id);
+		List<OrderItem> items = orderItemService.findByOrderId(id);
+
+		model.addAttribute("order", order);
+		model.addAttribute("items", items);
+		model.addAttribute("count", items.size());
+
+		return "admin/orders/orderdetail";
+	}
+
+	@GetMapping("/updateStatusQuick")
+	public String updateStatusQuick(@RequestParam("id") Integer id) {
+
+		orderService.nextStatus(id);
+
+		return "redirect:/orders";
+	}
+
 	@GetMapping("/cancel")
 	public String cancelOrder(@RequestParam("id") Integer id) {
 
