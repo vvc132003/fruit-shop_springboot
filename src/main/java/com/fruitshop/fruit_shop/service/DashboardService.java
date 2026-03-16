@@ -15,7 +15,6 @@ import com.fruitshop.fruit_shop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class DashboardService {
 
 	private final OrderRepository orderRepository;
