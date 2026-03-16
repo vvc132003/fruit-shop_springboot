@@ -3,6 +3,7 @@ package com.fruitshop.fruit_shop.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -68,5 +69,30 @@ public class HomeController {
 		model.addAttribute("featuredProducts", featuredProducts);
 
 		return "user/home/detail";
+	}
+
+	@GetMapping("/shop")
+	public String shop(@RequestParam(value = "category", required = false) Integer categoryId,
+			@RequestParam(value = "q", required = false) String keyword,
+			@RequestParam(value = "sort", required = false) String sort,
+			@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+
+		int size = 9;
+
+		Page<Product> productPage = productService.getProducts(categoryId, keyword, sort, page, size);
+
+		model.addAttribute("products", productPage.getContent());
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPages", productPage.getTotalPages());
+
+		model.addAttribute("categories", categoryService.getAll());
+
+		model.addAttribute("categoryId", categoryId);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("sort", sort);
+
+		model.addAttribute("featuredProducts", productService.getFeaturedProducts());
+
+		return "user/home/shop";
 	}
 }

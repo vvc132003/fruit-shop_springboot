@@ -5,6 +5,7 @@ import com.fruitshop.fruit_shop.entity.Order;
 import com.fruitshop.fruit_shop.entity.OrderItem;
 import com.fruitshop.fruit_shop.entity.User;
 import com.fruitshop.fruit_shop.service.CartService;
+import com.fruitshop.fruit_shop.service.ExportService;
 import com.fruitshop.fruit_shop.service.OrderItemService;
 import com.fruitshop.fruit_shop.service.OrderService;
 
@@ -14,9 +15,11 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.*;
 
 @Controller
 @RequestMapping("/orders")
@@ -25,8 +28,11 @@ public class OrderController {
 	private final CartService cartService;
 	private final OrderService orderService;
 	private final OrderItemService orderItemService;
+	private final ExportService exportService;
 
-	public OrderController(CartService cartService, OrderService orderService, OrderItemService orderItemService) {
+	public OrderController(CartService cartService, OrderService orderService, OrderItemService orderItemService,
+			ExportService exportService) {
+		this.exportService = exportService;
 		this.cartService = cartService;
 		this.orderService = orderService;
 		this.orderItemService = orderItemService;
@@ -144,4 +150,33 @@ public class OrderController {
 		return "redirect:/orders/history";
 	}
 
+	@GetMapping("/exportCsv")
+	public ResponseEntity<byte[]> exportExcel() throws Exception {
+
+		byte[] data = exportService.exportExcel();
+
+		HttpHeaders headers = new HttpHeaders();
+
+		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+
+		headers.setContentDisposition(ContentDisposition.attachment().filename("orders.xlsx").build());
+
+		return ResponseEntity.ok().headers(headers).body(data);
+	}
+
+	// ===== EXPORT PDF =====
+
+	@GetMapping("/exportAllPdf")
+	public ResponseEntity<byte[]> exportPdf() throws Exception {
+
+		byte[] data = exportService.exportPdf();
+
+		HttpHeaders headers = new HttpHeaders();
+
+		headers.setContentType(MediaType.APPLICATION_PDF);
+
+		headers.setContentDisposition(ContentDisposition.attachment().filename("orders.pdf").build());
+
+		return ResponseEntity.ok().headers(headers).body(data);
+	}
 }

@@ -69,4 +69,35 @@ public class ProductService {
 		return productRepository.findTop5ByOrderByIdDesc();
 	}
 
+	public Page<Product> getProducts(Integer categoryId, String keyword, String sort, int page, int size) {
+
+		Sort sorting = Sort.unsorted();
+
+		if ("new".equals(sort)) {
+			sorting = Sort.by("createdAt").descending();
+		} else if ("price_asc".equals(sort)) {
+			sorting = Sort.by("price").ascending();
+		} else if ("price_desc".equals(sort)) {
+			sorting = Sort.by("price").descending();
+		} else if ("featured".equals(sort)) {
+			sorting = Sort.by("isFeatured").descending();
+		}
+
+		Pageable pageable = PageRequest.of(page - 1, size, sorting);
+
+		if (categoryId != null && keyword != null && !keyword.isEmpty()) {
+			return productRepository.findByCategory_IdAndNameContainingIgnoreCase(categoryId, keyword, pageable);
+		}
+
+		if (categoryId != null) {
+			return productRepository.findByCategory_Id(categoryId, pageable);
+		}
+
+		if (keyword != null && !keyword.isEmpty()) {
+			return productRepository.findByNameContainingIgnoreCase(keyword, pageable);
+		}
+
+		return productRepository.findAll(pageable);
+	}
+
 }
