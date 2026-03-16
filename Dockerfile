@@ -1,14 +1,13 @@
-# Build stage
-FROM gradle:8.5-jdk17 AS build
+FROM eclipse-temurin:21-jdk
+
 WORKDIR /app
+
 COPY . .
 
-RUN gradle build -x test
+RUN chmod +x gradlew
+RUN ./gradlew build -x test --no-daemon
 
-# Run stage
-FROM eclipse-temurin:17-jdk
-WORKDIR /app
-COPY --from=build /app/build/libs/*.jar app.jar
+RUN cp build/libs/*.jar app.jar
 
 EXPOSE 8080
 
